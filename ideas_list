@@ -4,19 +4,18 @@
 Player : 
 - autoRun player
 - speed increasing by time (cap)
-- jump/crouch
+- four directions movement (limited by camera and limit)
 
 Map :
-- Obstacles 
-- boost (optionnal) :
-    speed
-    invicibility
-- Score (w/ collectibles and distance)
+- Obstacles ( wall(ex: spike), moving enemy, projectiles(w/ warning))
+- boost : ON FIRE!!!
+- Score (w/ collectibles, distance, checkpoint)
 - finshed map
 - infinite map (optionnal)
 
 Menu :
 - Main
+- Level Selection
 - Lose
 - Pause
 - Option
@@ -25,7 +24,7 @@ Assets :
 - Player and obstacled/collectibles
 - Texture Menu
 - Music/sfx (Optionnal) :
-    - jump
+    - bonus
     - death
     - music theme
 
@@ -35,8 +34,7 @@ Camera :
 - visual effect
 
 Control :
-- jump control
-- crouch control
+- arrows, key or mouse movement
 - pause button
 
 Reference :
