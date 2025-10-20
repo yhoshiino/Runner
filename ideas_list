@@ -1,1 +1,45 @@
+-Horizontal runner
 
+
+Player : 
+- autoRun player
+- speed increasing by time (cap)
+- jump/crouch
+
+Map :
+- Obstacles 
+- boost (optionnal) :
+    speed
+    invicibility
+- Score (w/ collectibles and distance)
+- finshed map
+- infinite map (optionnal)
+
+Menu :
+- Main
+- Lose
+- Pause
+- Option
+
+Assets :
+- Player and obstacled/collectibles
+- Texture Menu
+- Music/sfx (Optionnal) :
+    - jump
+    - death
+    - music theme
+
+Camera :
+- Following camera
+- shaking camera
+- visual effect
+
+Control :
+- jump control
+- crouch control
+- pause button
+
+Reference :
+- geometry dash
+- jetpack joyride
+- rakoo's adventure
