@@ -41,3 +41,58 @@ Reference :
 - geometry dash
 - jetpack joyride
 - rakoo's adventure
+
+
+
+Technical aspect :
+Getter
+setter
+
+Core:
+    Managers:
+        - EntityManager:
+                    - including (player, obstacles)
+                    - Entity Creation and destruction
+                    - Keep references of all entity (std::shared_ptr)
+                    - void updateAll(float deltatime)
+                    - void drawAll(RenderWindow& window)
+                    - void updateColisions
+Base Class: Entity:
+                Membre :
+                - int Health
+                - math::Vector2 Position, math::Vector2 Velocity, float Size, FloatRect hitbox
+                - sf::Texture, sf::Sprite
+                - State (Alive, Dead)
+                Method :
+                - virtual void update (float deltatime)
+                - virtual void draw (sf::RenderWindow& window)
+                - default constructor
+                - virtual destructor
+                - virtual bool isColliding(sf::FloatRect otherHitbox)
+                - virtual void onHit(Entity* otherEntity);
+Derived Class from Entity:
+                    Player:
+                    - void handleInputs (maybe in Game.hpp)
+                    Obstacles:
+                    - (we'll see)
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
