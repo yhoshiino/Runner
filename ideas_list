@@ -53,7 +53,7 @@ Core:
         - EntityManager:
                     - including (player, obstacles)
                     - Entity Creation and destruction
-                    - Keep references of all entity (std::shared_ptr)
+                    - Keep references of all entity (ex: Vector<std::shared_ptr> Enemy)
                     - void updateAll(float deltatime)
                     - void drawAll(RenderWindow& window)
                     - void updateColisions
