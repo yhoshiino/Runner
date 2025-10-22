@@ -1,7 +1,7 @@
 #include <iostream>
 #include <numbers>
-#include "Quaternion.h"
-#include "Vector3.h"
+#include "MathsLib/Quaternion.h"
+#include "MathsLib/Vector3.h"
 
 using namespace math;
 
