@@ -167,6 +167,14 @@
   <ItemGroup>
     <ClInclude Include="pch.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\3d-geometry-naji-n-tristan\MathsLib\MathsLib.vcxproj">
+      <Project>{74552f61-8d17-4f68-a205-427fa34f6780}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Runner\Runner.vcxproj">
+      <Project>{71dc0b89-1c85-4f0b-856b-feff4aabeefd}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

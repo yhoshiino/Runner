@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36414.22 d17.14
+VisualStudioVersion = 17.14.36414.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Runner", "Runner\Runner.vcxproj", "{71DC0B89-1C85-4F0B-856B-FEFF4AABEEFD}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest", "UnitTest\UnitTest.vcxproj", "{1723FD3C-92BD-E27E-67A3-92BABFB90E1A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MathsLib", "..\3d-geometry-naji-n-tristan\MathsLib\MathsLib.vcxproj", "{74552F61-8D17-4F68-A205-427FA34F6780}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,14 @@ Global
 		{1723FD3C-92BD-E27E-67A3-92BABFB90E1A}.Release|x64.Build.0 = Release|x64
 		{1723FD3C-92BD-E27E-67A3-92BABFB90E1A}.Release|x86.ActiveCfg = Release|Win32
 		{1723FD3C-92BD-E27E-67A3-92BABFB90E1A}.Release|x86.Build.0 = Release|Win32
+		{74552F61-8D17-4F68-A205-427FA34F6780}.Debug|x64.ActiveCfg = Debug|x64
+		{74552F61-8D17-4F68-A205-427FA34F6780}.Debug|x64.Build.0 = Debug|x64
+		{74552F61-8D17-4F68-A205-427FA34F6780}.Debug|x86.ActiveCfg = Debug|x64
+		{74552F61-8D17-4F68-A205-427FA34F6780}.Debug|x86.Build.0 = Debug|x64
+		{74552F61-8D17-4F68-A205-427FA34F6780}.Release|x64.ActiveCfg = Release|x64
+		{74552F61-8D17-4F68-A205-427FA34F6780}.Release|x64.Build.0 = Release|x64
+		{74552F61-8D17-4F68-A205-427FA34F6780}.Release|x86.ActiveCfg = Release|x64
+		{74552F61-8D17-4F68-A205-427FA34F6780}.Release|x86.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

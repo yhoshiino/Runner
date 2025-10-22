@@ -4,5 +4,5 @@ class Player
 {
 public:
 
-	int test = 5;
+	void test();
 };
