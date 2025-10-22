@@ -6,7 +6,7 @@
 #include <Vector>
 
 
-class Obstacle;
+//class Obstacle;
 
 class EntityManager
 {
@@ -24,6 +24,6 @@ public:
 
 
 private:
-	std::vector<std::unique_ptr<Obstacle>> m_obstacles;
+	/*std::vector<std::unique_ptr<Obstacle>> m_obstacles;*/
 	std::unique_ptr<Player> m_player;
 };
