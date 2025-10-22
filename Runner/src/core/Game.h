@@ -1,20 +1,37 @@
 #pragma once
 
 #include "SFML/Graphics.hpp"
-#include "Vector2.h"
+
+//class EntityManager;
 
 class Game
 {
 public:
+
+	Game();
+	~Game();
+
+	void run();
+
+	void pollEvents();
+
+	void centerWindow();
 
 private:
 
 	sf::RenderWindow m_window;
 
 	sf::Clock m_deltaClock;
-	float m_deltatime;
+	float m_deltatime = 0.f;
 
 	const int m_FRAME_RATE = 60;
-	const math::Vector2<int> m_logicalResolution = math::Vector2<int>( 500, 500 );
-};
+	const sf::Vector2u m_logicalResolution = {1920, 1080};
 
+	//std::unique_ptr<EntityManager> m_entityManager;
+
+	sf::View m_gameView;
+
+private:
+
+	void shutDown();
+};

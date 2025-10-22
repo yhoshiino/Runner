@@ -1,8 +1,8 @@
 #include <iostream>
 #include <numbers>
-#include "Mat4.h"
-#include "Vector3.h"
-#include "Quaternion.h"
+#include "MathsLib/Mat4.h"
+#include "MathsLib/Vector3.h"
+#include "MathsLib/Quaternion.h"
 
 using namespace math;
 
