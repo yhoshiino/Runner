@@ -50,20 +50,52 @@ setter
 
 Core:
     Managers:
+        - Game:
+            Members:
+            - Keep reference of the game window
+            - Keep reference of the deltaClock and deltaTime
+            - Const int m_FRAME_RATE = 60
+            - Const math::Vector2<int> m_logicalResolution (resolution to calculate all our distances in game, it will be automatically resized by an sf::View)
+            - Keep references of all managers (std::unique_ptr<>)
+            - sf::View stageView / sf::View uiView
+            Methods:
+            - void run() (runs the game loop)
+            - void terminate() (runs code which need to be done before closing the game)
+            - void pollEvents() (events SFML)
+            - void centerWindow()
         - EntityManager:
+                    Members:
                     - including (player, obstacles)
                     - Entity Creation and destruction
-                    - Keep references of all entity (ex: Vector<std::shared_ptr> Enemy)
+                    - Keep references of all entity (ex: Vector<std::shared_ptr> Enemy) (maybe vector<std::unique_ptr<Entity>>)
+                    Methods:
                     - void updateAll(float deltatime)
                     - void drawAll(RenderWindow& window)
-                    - void updateColisions
+                    - void updateColisions() (checks collisions of all entities which are on screen => checks collision of active entities)
+                    - void spawnEntity(int entityUID, math::Vector2<float> position) (creates entity, places it and adds it in its corresponding vector)
+        - LevelManager:
+                    Members:
+                        - bool m_isLoaded
+                        - int m_currentLevelUID
+                        - float m_elapsedTime (the level's clock)
+                        - sf::Texture m_backgroundTexture / sf::Sprite m_backgroundSprite
+                        
+                    Methods:
+                        - void load(int levelUID) / void unload();
+                        - void renderBackground()
+                        - bool isLoaded()
+                        - void parseLevelFile(const std::string& filePath) (reads the file. Called in load())
+                        - void spawnLevelEntities() (tells to the EntityManager to call spawnEntity())
+        - UIManager:
+                        
 Base Class: Entity:
-                Membre :
+                Members :
                 - int Health
                 - math::Vector2 Position, math::Vector2 Velocity, float Size, FloatRect hitbox
                 - sf::Texture, sf::Sprite
                 - State (Alive, Dead)
-                Method :
+                - bool m_isActive (an entity can only be active when it is on screen)
+                Methods :
                 - virtual void update (float deltatime)
                 - virtual void draw (sf::RenderWindow& window)
                 - default constructor
