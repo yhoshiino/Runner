@@ -1,12 +1,11 @@
 #pragma once
-#include "MathsLib/Vector2.h"
 #include <SFML/Graphics.hpp>
 
 class Entity 
 {
 public:
 
-	Entity(math::Vector2<float> spawnPosition, math::Vector2<float> initialVelocity);
+	Entity(sf::Vector2f spawnPosition, sf::Vector2f initialVelocity);
 	Entity() = default;
 
 	virtual ~Entity();
@@ -20,8 +19,8 @@ public:
 private:
 
 	
-	math::Vector2<float> m_position = {0.f,0.f};
-	math::Vector2<float> m_velocity = { 1.f,1.f };
+	sf::Vector2f m_position = {0.f,0.f};
+	sf::Vector2f m_velocity = { 1.f,1.f };
 
 	int m_health = 5;
 	const float m_SIZE = 64.f;

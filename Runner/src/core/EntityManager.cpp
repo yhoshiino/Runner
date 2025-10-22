@@ -20,6 +20,6 @@ void EntityManager::updateColisions() {
 
 }
 
-void EntityManager::spawnEntity(int entityUID, math::Vector2<float> position) {
+void EntityManager::spawnEntity(int entityUID, sf::Vector2f position) {
 
 }

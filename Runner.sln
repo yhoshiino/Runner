@@ -7,8 +7,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Runner", "Runner\Runner.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest", "UnitTest\UnitTest.vcxproj", "{1723FD3C-92BD-E27E-67A3-92BABFB90E1A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MathsLib", "MathsLib\MathsLib.vcxproj", "{74552F61-8D17-4F68-A205-427FA34F6780}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -23,10 +21,6 @@ Global
 		{1723FD3C-92BD-E27E-67A3-92BABFB90E1A}.Debug|x64.Build.0 = Debug|x64
 		{1723FD3C-92BD-E27E-67A3-92BABFB90E1A}.Release|x64.ActiveCfg = Release|x64
 		{1723FD3C-92BD-E27E-67A3-92BABFB90E1A}.Release|x64.Build.0 = Release|x64
-		{74552F61-8D17-4F68-A205-427FA34F6780}.Debug|x64.ActiveCfg = Debug|x64
-		{74552F61-8D17-4F68-A205-427FA34F6780}.Debug|x64.Build.0 = Debug|x64
-		{74552F61-8D17-4F68-A205-427FA34F6780}.Release|x64.ActiveCfg = Release|x64
-		{74552F61-8D17-4F68-A205-427FA34F6780}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

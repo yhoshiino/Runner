@@ -1,9 +1,9 @@
 #pragma once
 #include <iostream>
+#include <vector>
+
 #include "../models/Player.h"
 #include "SFML/Graphics.hpp"
-#include "MathsLib/Vector2.h"
-#include <Vector>
 
 
 //class Obstacle;
@@ -20,7 +20,7 @@ public:
 	void drawAll(sf::RenderWindow& window);
 	
 	void updateColisions();
-	void spawnEntity(int entityUID, math::Vector2<float> position);
+	void spawnEntity(int entityUID, sf::Vector2f position);
 
 
 private:
