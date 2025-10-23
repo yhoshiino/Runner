@@ -8,7 +8,7 @@ Player::Player(sf::Vector2f spawnPosition) :
 	m_square.setOutlineColor(sf::Color::Green);
 	m_square.setOutlineThickness(2.f);
 	m_square.setFillColor(sf::Color::Transparent);
-}
+	}
 
 
 Player::~Player()
@@ -18,6 +18,7 @@ Player::~Player()
 
 void Player::update(float deltatime)
 {
+	isOnFire();
 	sf::Vector2f autoMove(-200.f, 0.f); // automatic movement vector
 
 	// Normalize manual movement velocity
@@ -62,7 +63,7 @@ void Player::handleInputs()
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 	{
-		if (m_position.x < 1920 - 62.f) {
+		if (m_position.x < 1920 - m_SIZE + 8) {
 			m_velocity.x += 1;
 		}
 	}
@@ -74,8 +75,21 @@ void Player::handleInputs()
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
 	{
-		if (m_position.y < 1080 * 0.75f - 62.f) {
+		if (m_position.y < 1080 * 0.75f - m_SIZE + 8) {
 			m_velocity.y += 1;
 		}
 	}
+}
+
+bool Player::isOnFire()
+{
+	if (m_position.x <= 269.f) 
+	{
+		return true;
+	}
+	return false;
+}
+
+void Player::reset() {
+	m_position = {700.f, 540.f};
 }

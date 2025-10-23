@@ -17,6 +17,9 @@ public:
 	virtual bool isColliding(sf::FloatRect otherHitbox);
 	virtual void onHit(Entity * otherEntity);
 
+	void setPosition(sf::Vector2f newPos);
+	sf::Vector2f getPosition();
+
 protected:
 	sf::Vector2f m_position = { 0.f, 0.f };
 	sf::Vector2f m_velocity = { 0.f, 0.f };
@@ -24,11 +27,14 @@ protected:
 
 	sf::RectangleShape m_square;
 
-	const float m_SIZE = 75.f;
+	const float m_SIZE = 72.f;
 private:
 
 	int m_health = 5;
 	
+
+	
+
 	enum class State 
 	{
 		ALIVE,
