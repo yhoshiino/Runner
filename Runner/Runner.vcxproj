@@ -25,6 +25,9 @@
     <ClInclude Include="src\models\Entity.h" />
     <ClInclude Include="src\models\Player.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\core\level_test.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

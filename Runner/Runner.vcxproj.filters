@@ -51,4 +51,7 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\core\level_test.txt" />
+  </ItemGroup>
 </Project>

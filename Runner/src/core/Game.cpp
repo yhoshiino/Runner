@@ -3,6 +3,7 @@
 Game::Game()
 {
     m_window.create(sf::VideoMode({ 500, 500 }), "Robot Runner");
+    m_levelManager = std::make_unique<LevelManager>();
 }
 
 Game::~Game()
@@ -15,6 +16,8 @@ void Game::run()
     // Green Circle Test
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
+
+	m_levelManager->load(1);
 
     while (m_window.isOpen())
     {

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "LevelManager.h"
+
 #include "SFML/Graphics.hpp"
 
 //class EntityManager;
@@ -28,6 +30,7 @@ private:
 	const sf::Vector2u m_logicalResolution = {1920, 1080};
 
 	//std::unique_ptr<EntityManager> m_entityManager;
+	std::unique_ptr<LevelManager> m_levelManager;
 
 	sf::View m_gameView;
 
