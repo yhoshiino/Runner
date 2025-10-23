@@ -14,6 +14,7 @@
     <ClCompile Include="src\core\EntityManager.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
     <ClCompile Include="src\core\LevelManager.cpp" />
+    <ClCompile Include="src\core\MenuManager.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\models\Entity.cpp" />
     <ClCompile Include="src\models\Player.cpp" />
