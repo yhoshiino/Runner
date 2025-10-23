@@ -18,5 +18,5 @@ public:
 	void handleInputs();
 private:
 
-	float m_speed = 200.f;
+	float m_speed = 450.f;
 };

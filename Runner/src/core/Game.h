@@ -1,10 +1,9 @@
 #pragma once
 
 #include "LevelManager.h"
+#include "EntityManager.h"
 
 #include "SFML/Graphics.hpp"
-
-#include "EntityManager.h"
 
 class Game
 {

@@ -4,7 +4,7 @@
 Player::Player(sf::Vector2f spawnPosition) :
 	Entity::Entity(spawnPosition)
 {
-	m_square.setSize({ m_SIZE, m_SIZE });
+	m_square.setSize({ 62.f, 62.f });
 	m_square.setOutlineColor(sf::Color::Green);
 	m_square.setOutlineThickness(2.f);
 	m_square.setFillColor(sf::Color::Transparent);
@@ -18,7 +18,7 @@ Player::~Player()
 
 void Player::update(float deltatime)
 {
-	sf::Vector2f autoMove(-50.f, 0.f); // automatic movement vector
+	sf::Vector2f autoMove(-200.f, 0.f); // automatic movement vector
 
 	// Normalize manual movement velocity
 	if (m_velocity.x != 0.f || m_velocity.y != 0.f)
@@ -27,10 +27,9 @@ void Player::update(float deltatime)
 		m_velocity /= len;
 	}
 
-	float manualSpeed = 200.f; // manual movement speed
 	handleInputs();             // read keyboard input
 	m_position += autoMove * deltatime;                  // apply automatic movement
-	m_position += m_velocity * manualSpeed * deltatime; // apply manual movement
+	m_position += m_velocity * m_speed * deltatime;		// apply speed movement
 	m_square.setPosition(m_position);                   // update square position
 }
 
