@@ -1,7 +1,10 @@
 #include "EntityManager.h"
+#include <memory>
 
-EntityManager::EntityManager()
+EntityManager::EntityManager(): 
+	m_player(std::make_unique<Player>(sf::Vector2f{ 200.f, 580.f }))
 {
+	
 }
 
 EntityManager::~EntityManager()
@@ -9,11 +12,11 @@ EntityManager::~EntityManager()
 }
 
 void EntityManager::updateAll(float deltatime) {
-
+	m_player->update(deltatime);
 }
 
 void EntityManager::drawAll(sf::RenderWindow& window) {
-
+	m_player->draw(window);
 }
 
 void EntityManager::updateColisions() {

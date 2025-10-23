@@ -4,7 +4,7 @@
 
 #include "SFML/Graphics.hpp"
 
-//class EntityManager;
+#include "EntityManager.h"
 
 class Game
 {
@@ -29,7 +29,7 @@ private:
 	const int m_FRAME_RATE = 60;
 	const sf::Vector2u m_logicalResolution = {1920, 1080};
 
-	//std::unique_ptr<EntityManager> m_entityManager;
+	std::unique_ptr<EntityManager> m_entityManager;
 	std::unique_ptr<LevelManager> m_levelManager;
 
 	sf::View m_gameView;

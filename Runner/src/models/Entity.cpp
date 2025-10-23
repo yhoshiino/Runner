@@ -1,8 +1,7 @@
 #include "Entity.h"
 
-Entity::Entity(sf::Vector2f spawnPosition, sf::Vector2f initialVelocity) :
-	m_position(spawnPosition),
-	m_velocity(initialVelocity)
+Entity::Entity(sf::Vector2f spawnPosition) :
+	m_position(spawnPosition)
 {
 }
 

@@ -1,11 +1,12 @@
 #pragma once
 #include "Entity.h"
 
+
 class Player : public Entity
 {
 public:
 
-	Player(sf::Vector2f spawnPosition, sf::Vector2f initialVelocity);
+	Player(sf::Vector2f spawnPosition);
 	~Player();
 
 	void update(float deltatime) override;
