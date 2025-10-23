@@ -19,8 +19,7 @@ public:
 private:
 
 	
-	sf::Vector2f m_position = {0.f,0.f};
-	sf::Vector2f m_velocity = { 1.f,1.f };
+	
 
 	int m_health = 5;
 	const float m_SIZE = 64.f;
@@ -36,5 +35,7 @@ private:
 	State m_state = State::ALIVE;
 
 	bool m_isActive = false;
-
+protected:
+	sf::Vector2f m_position = { 0.f, 0.f };
+	sf::Vector2f m_velocity = { 0.f, 0.f };
 };

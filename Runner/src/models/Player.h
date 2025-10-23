@@ -5,7 +5,7 @@ class Player : public Entity
 {
 public:
 
-	Player();
+	Player(sf::Vector2f spawnPosition, sf::Vector2f initialVelocity);
 	~Player();
 
 	void update(float deltatime) override;
@@ -17,4 +17,5 @@ public:
 	void handleInputs();
 private:
 
+	float m_speed = 200.f;
 };
