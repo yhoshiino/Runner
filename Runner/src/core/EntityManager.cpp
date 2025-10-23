@@ -29,6 +29,6 @@ void EntityManager::spawnEntity(int entityUID, sf::Vector2f position) {
 
 void EntityManager::resetPlayerPosition() {
 	if (m_player->isOnFire()) {
-		m_player->reset();
+		m_player->resetPlayer();
 	}
 }

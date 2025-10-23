@@ -19,7 +19,7 @@ public:
 
 	bool isOnFire();
 
-	void reset();
+	void resetPlayer();
 
 private:
 

@@ -90,6 +90,6 @@ bool Player::isOnFire()
 	return false;
 }
 
-void Player::reset() {
+void Player::resetPlayer() {
 	m_position = {700.f, 540.f};
 }
