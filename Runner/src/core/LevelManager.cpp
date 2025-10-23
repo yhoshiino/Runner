@@ -18,11 +18,16 @@ void LevelManager::load(int levelUID)
 	parseLevelFile("src/core/level_test.txt");
 	spawnLevelEntities();
 
+	m_currentLevelUID = levelUID;
+
 	m_isLoaded = true;
 }
 
 void LevelManager::unload()
 {
+	m_entitySpawnDataList.clear();
+
+	m_currentLevelUID = -1;
 	m_isLoaded = false;
 }
 
