@@ -63,7 +63,7 @@ void Player::handleInputs()
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 	{
-		if (m_position.x < 1920 - m_SIZE) {
+		if (m_position.x < 1920 - m_SIZE + 8) {
 			m_velocity.x += 1;
 		}
 	}
@@ -75,7 +75,7 @@ void Player::handleInputs()
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
 	{
-		if (m_position.y < 1080 * 0.75f) {
+		if (m_position.y < 1080 * 0.75f - m_SIZE + 8) {
 			m_velocity.y += 1;
 		}
 	}
