@@ -19,6 +19,8 @@ public:
 
 	bool isOnFire();
 
+	void reset();
+
 private:
 
 	float m_speed = 450.f;

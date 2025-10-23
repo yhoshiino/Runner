@@ -18,6 +18,7 @@ public:
 
 	void centerWindow();
 
+
 private:
 
 	sf::RenderWindow m_window;

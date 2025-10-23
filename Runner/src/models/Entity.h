@@ -17,6 +17,9 @@ public:
 	virtual bool isColliding(sf::FloatRect otherHitbox);
 	virtual void onHit(Entity * otherEntity);
 
+	void setPosition(sf::Vector2f newPos);
+	sf::Vector2f getPosition();
+
 protected:
 	sf::Vector2f m_position = { 0.f, 0.f };
 	sf::Vector2f m_velocity = { 0.f, 0.f };
