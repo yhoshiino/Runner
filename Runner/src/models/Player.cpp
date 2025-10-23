@@ -8,7 +8,7 @@ Player::Player(sf::Vector2f spawnPosition) :
 	m_square.setOutlineColor(sf::Color::Green);
 	m_square.setOutlineThickness(2.f);
 	m_square.setFillColor(sf::Color::Transparent);
-}
+	}
 
 
 Player::~Player()
@@ -78,4 +78,9 @@ void Player::handleInputs()
 			m_velocity.y += 1;
 		}
 	}
+}
+
+bool Player::isOnFire()
+{
+	return false;
 }
