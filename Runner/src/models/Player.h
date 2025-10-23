@@ -16,6 +16,11 @@ public:
 	void onHit(Entity* otherEntity) override;
 
 	void handleInputs();
+
+	bool isOnFire();
+
+	void reset();
+
 private:
 
 	float m_speed = 450.f;

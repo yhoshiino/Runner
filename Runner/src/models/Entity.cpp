@@ -25,3 +25,11 @@ bool Entity::isColliding(sf::FloatRect otherHitbox)
 void Entity::onHit(Entity* otherEntity)
 {
 }
+
+void Entity::setPosition(sf::Vector2f newPos) {
+	m_position = newPos;
+}
+
+sf::Vector2f Entity::getPosition() {
+	return m_position; 
+}
