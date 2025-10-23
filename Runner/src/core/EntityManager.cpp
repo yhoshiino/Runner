@@ -2,7 +2,7 @@
 #include <memory>
 
 EntityManager::EntityManager(): 
-	m_player(std::make_unique<Player>(sf::Vector2f{ 200.f, 580.f }))
+	m_player(std::make_unique<Player>(sf::Vector2f{ 700.f, 580.f }))
 {
 	
 }

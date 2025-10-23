@@ -24,11 +24,14 @@ protected:
 
 	sf::RectangleShape m_square;
 
-	const float m_SIZE = 75.f;
+	const float m_SIZE = 72.f;
 private:
 
 	int m_health = 5;
 	
+
+	
+
 	enum class State 
 	{
 		ALIVE,
