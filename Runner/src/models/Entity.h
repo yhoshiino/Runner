@@ -29,7 +29,7 @@ protected:
 
 	sf::RectangleShape m_square; // For debugging
 
-	const float m_SIZE = 75.f;
+	const float m_SIZE = 72.f;
 private:
 
 	int m_health = 5;

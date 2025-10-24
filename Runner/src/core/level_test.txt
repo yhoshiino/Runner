@@ -1,3 +1,6 @@
 ENTITY: uid=0; position={2300, 600};
+ENTITY: uid=0; position={2300, 672};
+ENTITY: uid=0; position={2300, 250};
+ENTITY: uid=0; position={2300, 322};
 ENTITY: uid=5; position={2800, 400};
 ENTITY: uid=2; position={3000, 500};
