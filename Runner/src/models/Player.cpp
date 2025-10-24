@@ -20,6 +20,7 @@ Player::~Player()
 
 void Player::update(float deltatime)
 {
+	isOnFire();
 	sf::Vector2f autoMove(-200.f, 0.f); // automatic movement vector
 
 	// Normalize manual movement velocity

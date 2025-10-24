@@ -22,6 +22,9 @@ public:
 	sf::Vector2f getPosition() const;
 	sf::FloatRect getHitbox() const;
 
+	void setPosition(sf::Vector2f newPos);
+
+
 protected:
 	sf::Vector2f m_position = { 0.f, 0.f };
 	sf::Vector2f m_velocity = { 0.f, 0.f };
@@ -34,6 +37,7 @@ private:
 
 	int m_health = 5;
 	
+
 	enum class State 
 	{
 		ALIVE,

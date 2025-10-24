@@ -20,7 +20,6 @@ void Game::run()
     sf::RectangleShape fire({ 300.f, 1080.f });
     fire.setFillColor(sf::Color(255, 124, 70));
     conveyor.setPosition({ fire.getSize().x, 1080*0.25f});
-
 	m_levelManager->load(1);
 
     while (m_window.isOpen())
@@ -41,11 +40,13 @@ void Game::run()
         }
 
         m_entityManager->updateAll(m_deltatime);
-
+        m_entityManager->resetPlayerPosition();
         m_window.clear();
         m_window.draw(conveyor);
         m_window.draw(fire);
 
+        m_window.draw(conveyor);
+        m_window.draw(fire);
         m_entityManager->drawAll(m_window);
 
         m_window.display();

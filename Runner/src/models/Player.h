@@ -14,7 +14,12 @@ public:
 
 	void onHit(Entity* otherEntity) override;
 
-	void handleInputs(const std::vector<std::unique_ptr<Entity>>& obstacles);
+	void handleInputs();
+
+	bool isOnFire();
+
+	void reset();
+
 
 	sf::Vector2f getDesiredVelocity() const;
 

@@ -22,6 +22,7 @@
     <ClInclude Include="src\core\EntityManager.h" />
     <ClInclude Include="src\core\Game.h" />
     <ClInclude Include="src\core\LevelManager.h" />
+    <ClInclude Include="src\core\MenuManager.h" />
     <ClInclude Include="src\models\Entity.h" />
     <ClInclude Include="src\models\Player.h" />
   </ItemGroup>

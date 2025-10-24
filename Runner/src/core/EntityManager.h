@@ -19,6 +19,8 @@ public:
 	void applyPlayerMovement();
 	void spawnEntity(int entityUID, sf::Vector2f position);
 
+	void resetPlayerPosition();
+
 private:
 
 	std::vector<std::unique_ptr<Entity>> m_obstacles;

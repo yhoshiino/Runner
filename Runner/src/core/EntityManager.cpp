@@ -2,7 +2,7 @@
 #include <memory>
 
 EntityManager::EntityManager(): 
-	m_player(std::make_unique<Player>(sf::Vector2f{ 200.f, 580.f }))
+	m_player(std::make_unique<Player>(sf::Vector2f{ 700.f, 540.f }))
 {
 	
 }
@@ -115,4 +115,11 @@ void EntityManager::spawnEntity(int entityUID, sf::Vector2f position)
 
 	auto newEntity = std::make_unique<Entity>(position);
 	m_obstacles.push_back(std::move(newEntity));
+}
+
+
+void EntityManager::resetPlayerPosition() {
+	if (m_player->isOnFire()) {
+		m_player->reset();
+	}
 }
