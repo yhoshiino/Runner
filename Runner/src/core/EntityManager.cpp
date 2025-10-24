@@ -29,7 +29,7 @@ void EntityManager::updateAll(float deltaTime)
 		obstacle->update(deltaTime);
 	}
 
-	m_player->handleInputs(m_obstacles);
+	m_player->handleInputs();
 	applyPlayerMovement();
 	m_player->update(deltaTime);
 }

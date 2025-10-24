@@ -49,7 +49,7 @@ void Player::onHit(Entity* otherEntity)
 	m_velocity.x -= 300.f; //Temporary pushback
 }
 
-void Player::handleInputs(const std::vector<std::unique_ptr<Entity>>& obstacles)
+void Player::handleInputs()
 {
 	m_desiredVelocity = { 0.f, 0.f };
 
@@ -79,6 +79,19 @@ void Player::handleInputs(const std::vector<std::unique_ptr<Entity>>& obstacles)
 	);
 
 	if (length > 0.f) m_desiredVelocity /= length;
+}
+
+bool Player::isOnFire()
+{
+	if (m_position.x <= 269.f)
+	{
+		return true;
+	}
+	return false;
+}
+
+void Player::reset() {
+	m_position = { 700.f, 540.f };
 }
 
 sf::Vector2f Player::getDesiredVelocity() const
