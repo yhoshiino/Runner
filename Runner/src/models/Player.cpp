@@ -64,8 +64,8 @@ void Player::handleInputs()
 		m_desiredVelocity.y += 1.f;
 
 	// Apply clamping
-	const float TOP_LIMIT = 1080.f * 0.25f;
-	const float BOTTOM_LIMIT = 1080.f * 0.75f - m_hitbox.size.y;
+	const float TOP_LIMIT = 288;
+	const float BOTTOM_LIMIT = 792 - m_hitbox.size.y;
 	if (m_position.y <= TOP_LIMIT && m_desiredVelocity.y < 0.f)
 		m_desiredVelocity.y = 0.f;
 

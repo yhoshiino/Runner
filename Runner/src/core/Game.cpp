@@ -15,11 +15,14 @@ Game::~Game()
 void Game::run()
 {
     // Temporary shapes
-    sf::RectangleShape conveyor({1920.f, 1080*0.5f});
+    sf::RectangleShape conveyor({1920.f, 504 });
     conveyor.setFillColor(sf::Color(150, 150, 150));
+
     sf::RectangleShape fire({ 300.f, 1080.f });
     fire.setFillColor(sf::Color(255, 124, 70));
-    conveyor.setPosition({ fire.getSize().x, 1080*0.25f});
+
+    conveyor.setPosition({ fire.getSize().x, 576 / 2.f});
+
 	m_levelManager->load(1);
 
     while (m_window.isOpen())
