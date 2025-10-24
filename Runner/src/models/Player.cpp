@@ -50,43 +50,37 @@ void Player::onHit(Entity* otherEntity)
 
 void Player::handleInputs(const std::vector<std::unique_ptr<Entity>>& obstacles)
 {
-	sf::Vector2f desiredVelocity = { 0.f, 0.f };
+	m_desiredVelocity = { 0.f, 0.f };
 
+	// Check for inputs
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q))
-		desiredVelocity.x -= 1.f;
+		m_desiredVelocity.x -= 1.f;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
-		desiredVelocity.x += 1.f;
+		m_desiredVelocity.x += 1.f;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z))
-		desiredVelocity.y -= 1.f;
+		m_desiredVelocity.y -= 1.f;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
-		desiredVelocity.y += 1.f;
+		m_desiredVelocity.y += 1.f;
 
-	sf::FloatRect nextHitboxX = m_hitbox;
-	nextHitboxX.position.x += desiredVelocity.x;
+	// Apply clamping
+	const float TOP_LIMIT = 1080.f * 0.25f;
+	const float BOTTOM_LIMIT = 1080.f * 0.75f - m_hitbox.size.y;
+	if (m_position.y <= TOP_LIMIT && m_desiredVelocity.y < 0.f)
+		m_desiredVelocity.y = 0.f;
 
-	sf::FloatRect nextHitboxY = m_hitbox;
-	nextHitboxY.position.y += desiredVelocity.y;
+	if (m_position.y >= BOTTOM_LIMIT && m_desiredVelocity.y > 0.f)
+		m_desiredVelocity.y = 0.f;
 
-	bool collidesX = false;
-	bool collidesY = false;
+	// Normalize desired velocity
+	const float length = std::sqrt(
+		(m_desiredVelocity.x * m_desiredVelocity.x) +
+		(m_desiredVelocity.y * m_desiredVelocity.y)
+	);
 
-	for (const auto& obstacle : obstacles)
-	{
-		if (!obstacle)
-			continue;
+	if (length > 0.f) m_desiredVelocity /= length;
+}
 
-		const sf::FloatRect& obstacleHitbox = obstacle->getHitbox();
-
-		if (nextHitboxX.findIntersection(obstacleHitbox).has_value())
-			collidesX = true;
-
-		if (nextHitboxY.findIntersection(obstacleHitbox).has_value())
-			collidesY = true;
-
-		if (collidesX && collidesY)
-			break;
-	}
-
-	m_velocity.x = collidesX ? 0.f : desiredVelocity.x;
-	m_velocity.y = collidesY ? 0.f : desiredVelocity.y;
+sf::Vector2f Player::getDesiredVelocity() const
+{
+	return m_desiredVelocity;
 }

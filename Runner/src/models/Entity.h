@@ -17,6 +17,8 @@ public:
 	virtual bool isColliding(sf::FloatRect otherHitbox, float deltaTime);
 	virtual void onHit(Entity * otherEntity);
 
+	void addVelocity(sf::Vector2f newVelocity);
+
 	sf::Vector2f getPosition() const;
 	sf::FloatRect getHitbox() const;
 

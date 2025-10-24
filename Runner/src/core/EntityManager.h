@@ -16,6 +16,7 @@ public:
 	void drawAll(sf::RenderWindow& window);
 	
 	void updateColisions(float deltaTime);
+	void applyPlayerMovement();
 	void spawnEntity(int entityUID, sf::Vector2f position);
 
 private:

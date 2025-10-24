@@ -30,6 +30,7 @@ void EntityManager::updateAll(float deltaTime)
 	}
 
 	m_player->handleInputs(m_obstacles);
+	applyPlayerMovement();
 	m_player->update(deltaTime);
 }
 
@@ -66,6 +67,46 @@ void EntityManager::updateColisions(float deltaTime)
 			obstacle->onHit(m_player.get());
 		}
 	}
+}
+
+void EntityManager::applyPlayerMovement()
+{
+	const sf::Vector2f desiredVelocity = m_player->getDesiredVelocity();
+	const sf::FloatRect playerHitbox = m_player->getHitbox();
+
+	sf::FloatRect nextHitboxX = playerHitbox;
+	nextHitboxX.position.x += desiredVelocity.x;
+
+	sf::FloatRect nextHitboxY = playerHitbox;
+	nextHitboxY.position.y += desiredVelocity.y;
+
+	bool collidesX = false;
+	bool collidesY = false;
+
+	for (const auto& obstacle : m_obstacles)
+	{
+		if (!obstacle)
+			continue;
+
+		const sf::FloatRect& obstacleHitbox = obstacle->getHitbox();
+
+		if (nextHitboxX.findIntersection(obstacleHitbox).has_value())
+			collidesX = true;
+
+		if (nextHitboxY.findIntersection(obstacleHitbox).has_value())
+			collidesY = true;
+
+		if (collidesX && collidesY)
+			break;
+	}
+
+	sf::Vector2f movementVelocity
+	{
+		collidesX ? 0.f : desiredVelocity.x,
+		collidesY ? 0.f : desiredVelocity.y,
+	};
+
+	m_player->addVelocity(movementVelocity);
 }
 
 void EntityManager::spawnEntity(int entityUID, sf::Vector2f position) 

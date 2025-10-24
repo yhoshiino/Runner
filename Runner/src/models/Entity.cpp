@@ -56,6 +56,11 @@ void Entity::onHit(Entity* otherEntity)
 {
 }
 
+void Entity::addVelocity(sf::Vector2f newVelocity)
+{
+	m_velocity += newVelocity;
+}
+
 sf::Vector2f Entity::getPosition() const
 {
 	return m_position;
