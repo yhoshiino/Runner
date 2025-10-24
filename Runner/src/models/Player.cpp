@@ -8,6 +8,8 @@ Player::Player(sf::Vector2f spawnPosition) :
 	m_square.setOutlineColor(sf::Color::Green);
 	m_square.setOutlineThickness(2.f);
 	m_square.setFillColor(sf::Color::Transparent);
+
+	m_hitbox.size = { 62.f, 62.f };
 }
 
 
@@ -27,10 +29,12 @@ void Player::update(float deltatime)
 		m_velocity /= len;
 	}
 
-	handleInputs();             // read keyboard input
 	m_position += autoMove * deltatime;                  // apply automatic movement
 	m_position += m_velocity * m_speed * deltatime;		// apply speed movement
 	m_square.setPosition(m_position);                   // update square position
+	m_hitbox.position = m_position;                     // update hitbox position
+
+	m_velocity = { 0.f, 0.f }; // reset velocity for next frame
 }
 
 void Player::draw(sf::RenderWindow& window)
@@ -38,44 +42,51 @@ void Player::draw(sf::RenderWindow& window)
 	window.draw(m_square);
 }
 
-// Collision detection placeholder (currently always false)
-bool Player::isColliding(sf::FloatRect otherHitbox)
-{
-	return false;
-}
-
 // Called when player collides with another entity (currently empty)
 void Player::onHit(Entity* otherEntity)
 {
-
+	m_velocity.x -= 300.f; //Temporary pushback
 }
 
-void Player::handleInputs()
+void Player::handleInputs(const std::vector<std::unique_ptr<Entity>>& obstacles)
 {
-	m_velocity = { 0.f, 0.f };
+	sf::Vector2f desiredVelocity = { 0.f, 0.f };
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q))
-	{
-		if (m_position.x > 0) {
-			m_velocity.x += -1;
-		}
-	}
+		desiredVelocity.x -= 1.f;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
-	{
-		if (m_position.x < 1920 - 62.f) {
-			m_velocity.x += 1;
-		}
-	}
+		desiredVelocity.x += 1.f;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z))
-	{
-		if (m_position.y > 1080 * 0.25f) {
-			m_velocity.y += -1;
-		}
-	}
+		desiredVelocity.y -= 1.f;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
+		desiredVelocity.y += 1.f;
+
+	sf::FloatRect nextHitboxX = m_hitbox;
+	nextHitboxX.position.x += desiredVelocity.x;
+
+	sf::FloatRect nextHitboxY = m_hitbox;
+	nextHitboxY.position.y += desiredVelocity.y;
+
+	bool collidesX = false;
+	bool collidesY = false;
+
+	for (const auto& obstacle : obstacles)
 	{
-		if (m_position.y < 1080 * 0.75f - 62.f) {
-			m_velocity.y += 1;
-		}
+		if (!obstacle)
+			continue;
+
+		const sf::FloatRect& obstacleHitbox = obstacle->getHitbox();
+
+		if (nextHitboxX.findIntersection(obstacleHitbox).has_value())
+			collidesX = true;
+
+		if (nextHitboxY.findIntersection(obstacleHitbox).has_value())
+			collidesY = true;
+
+		if (collidesX && collidesY)
+			break;
 	}
+
+	m_velocity.x = collidesX ? 0.f : desiredVelocity.x;
+	m_velocity.y = collidesY ? 0.f : desiredVelocity.y;
 }

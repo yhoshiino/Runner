@@ -3,8 +3,8 @@
 Game::Game()
 {
     m_window.create(sf::VideoMode(m_logicalResolution), "Robot Runner", sf::State::Fullscreen);
-    m_levelManager = std::make_unique<LevelManager>();
     m_entityManager = std::make_unique<EntityManager>();
+    m_levelManager = std::make_unique<LevelManager>(m_entityManager.get());
 }
 
 Game::~Game()

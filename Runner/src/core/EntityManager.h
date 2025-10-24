@@ -5,9 +5,6 @@
 #include "../models/Player.h"
 #include "SFML/Graphics.hpp"
 
-
-//class Obstacle;
-
 class EntityManager
 {
 public:
@@ -15,15 +12,14 @@ public:
 	EntityManager();
 	~EntityManager();
 
-
-	void updateAll(float deltatime);
+	void updateAll(float deltaTime);
 	void drawAll(sf::RenderWindow& window);
 	
-	void updateColisions();
+	void updateColisions(float deltaTime);
 	void spawnEntity(int entityUID, sf::Vector2f position);
 
-
 private:
-	/*std::vector<std::unique_ptr<Obstacle>> m_obstacles;*/
+
+	std::vector<std::unique_ptr<Entity>> m_obstacles;
 	std::unique_ptr<Player> m_player;
 };

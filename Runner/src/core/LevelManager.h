@@ -1,4 +1,5 @@
 #pragma once
+#include "EntityManager.h"
 #include <SFML/Graphics.hpp>
 
 struct EntitySpawnData
@@ -11,7 +12,7 @@ class LevelManager
 {
 public:
 
-	LevelManager();
+	LevelManager(EntityManager* entityManagerRef);
 	~LevelManager();
 
 	void load(int levelUID);
@@ -30,6 +31,8 @@ private:
 	float m_elapsedTime = 0.f;
 
 	std::vector<EntitySpawnData> m_entitySpawnDataList;
+
+	EntityManager* m_entityManager;
 
 	/*sf::Texture m_backgroundTexture;
 	sf::Sprite m_backgroundSprite;*/
