@@ -36,5 +36,6 @@ private:
 
 private:
 
+	void initViews();
 	void shutDown();
 };

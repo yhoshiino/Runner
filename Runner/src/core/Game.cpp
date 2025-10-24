@@ -2,9 +2,11 @@
 
 Game::Game()
 {
-    m_window.create(sf::VideoMode(m_logicalResolution), "Robot Runner", sf::State::Fullscreen);
+    m_window.create(sf::VideoMode(m_logicalResolution), "Robot Runner");
     m_entityManager = std::make_unique<EntityManager>();
     m_levelManager = std::make_unique<LevelManager>(m_entityManager.get());
+
+    initViews();
 }
 
 Game::~Game()
@@ -24,6 +26,8 @@ void Game::run()
     conveyor.setPosition({ fire.getSize().x, 576 / 2.f});
 
 	m_levelManager->load(1);
+
+    m_window.setView(m_gameView);
 
     while (m_window.isOpen())
     {
@@ -54,6 +58,14 @@ void Game::run()
 
         m_window.display();
     }
+}
+
+void Game::initViews()
+{
+    m_gameView.setSize(static_cast<sf::Vector2f>(m_logicalResolution));
+    m_gameView.setCenter(m_gameView.getSize() / 2.f);
+
+    m_gameView.setViewport(sf::FloatRect({ 0.f, 0.f }, { 1.f, 1.f }));
 }
 
 void Game::shutDown()
