@@ -17,6 +17,10 @@ Game::~Game()
 
 void Game::run()
 {
+    // Temporary spawner
+    const float spawnDistance = 350.f;
+    float spawnAccumulator = 0.f;
+
     // Temporary shapes
     sf::RectangleShape conveyor({1920.f, 504 });
     conveyor.setFillColor(sf::Color(150, 150, 150));
@@ -45,7 +49,25 @@ void Game::run()
         }
 
         m_gameStats->updateConveyorSpeed(m_deltatime);
-        m_gameStats->updateDistance(1.f, m_deltatime);
+        m_gameStats->updateDistance(0.2f, m_deltatime);
+
+        std::cout << "[SCORE]: " << std::ceil(m_gameStats->getScore()) << std::endl;
+
+        // TEMPORARY SPAWN
+        spawnAccumulator += m_gameStats->getConveyorSpeed() * m_deltatime;
+        if (spawnAccumulator >= spawnDistance)
+        {
+            spawnAccumulator = 0.f;
+
+            // Spawn between 1 and 5 entities
+            int entitiesToSpawn = 1 + (rand() % 5); // rand()%5 -> 0 à 4, +1 -> 1 à 5
+
+            for (int i = 0; i < entitiesToSpawn; ++i)
+            {
+                float y = 288.f + static_cast<float>(rand() % (720 - 288 + 1));
+                m_entityManager->spawnEntity(0, { 2000.f, y });
+            }
+        }
 
         m_entityManager->updateAll(m_deltatime);
         m_entityManager->resetPlayerPosition();

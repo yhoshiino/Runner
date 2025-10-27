@@ -15,9 +15,9 @@ public:
 
 private:
 
-	float m_score = 0.f;
+	float m_score = 0;
 	float m_distance = 0.f; // Distance in meters
-	float m_conveyorSpeed = 100.f;
+	float m_conveyorSpeed = 200.f;
 	
 	const float m_CONVEYOR_ACCELERATION_FACTOR = 5.f;
 };

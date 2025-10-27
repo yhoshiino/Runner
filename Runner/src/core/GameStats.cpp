@@ -8,7 +8,7 @@ void GameStats::updateConveyorSpeed(float deltaTime)
 void GameStats::updateDistance(float meter, float deltaTime)
 {
     m_distance += meter;
-    m_score += m_distance * deltaTime;
+    m_score += m_distance * deltaTime * 0.01f;
 }
 
 float GameStats::getConveyorSpeed() const
