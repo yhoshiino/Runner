@@ -1,12 +1,11 @@
 #pragma once
 #include "Entity.h"
 
-
 class Player : public Entity
 {
 public:
 
-	Player(sf::Vector2f spawnPosition);
+	Player(GameStats* gameStats, sf::Vector2f spawnPosition);
 	~Player();
 
 	void update(float deltatime) override;
@@ -25,6 +24,8 @@ public:
 
 private:
 
-	float m_speed = 450.f;
+	float m_speed = 100.f;
+	const float m_CONVEYOR_SPEED_FACTOR = 1.75f; // How much faster is the player compared to the conveyor speed
+
 	sf::Vector2f m_desiredVelocity = { 0.f, 0.f }; // Velocity used for movement input
 };

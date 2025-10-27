@@ -3,7 +3,8 @@
 Game::Game()
 {
     m_window.create(sf::VideoMode(m_logicalResolution), "Robot Runner");
-    m_entityManager = std::make_unique<EntityManager>();
+    m_gameStats = std::make_unique<GameStats>();
+    m_entityManager = std::make_unique<EntityManager>(m_gameStats.get());
     m_levelManager = std::make_unique<LevelManager>(m_entityManager.get());
 
     initViews();
@@ -41,8 +42,10 @@ void Game::run()
                 if (keyPressed->scancode == sf::Keyboard::Scancode::Escape)
                     m_window.close();
             }
-            
         }
+
+        m_gameStats->updateConveyorSpeed(m_deltatime);
+        m_gameStats->updateDistance(1.f, m_deltatime);
 
         m_entityManager->updateAll(m_deltatime);
         m_entityManager->resetPlayerPosition();

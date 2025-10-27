@@ -1,10 +1,10 @@
 #include "EntityManager.h"
 #include <memory>
 
-EntityManager::EntityManager(): 
-	m_player(std::make_unique<Player>(sf::Vector2f{ 700.f, 540.f }))
+EntityManager::EntityManager(GameStats* gameStatsRef):
+	m_gameStats(gameStatsRef),
+	m_player(std::make_unique<Player>(m_gameStats, sf::Vector2f{ 700.f, 540.f }))
 {
-	
 }
 
 EntityManager::~EntityManager()
@@ -113,7 +113,7 @@ void EntityManager::spawnEntity(int entityUID, sf::Vector2f position)
 {
 	// The UID will have more use in the future
 
-	auto newEntity = std::make_unique<Entity>(position);
+	auto newEntity = std::make_unique<Entity>(m_gameStats, position);
 	m_obstacles.push_back(std::move(newEntity));
 }
 

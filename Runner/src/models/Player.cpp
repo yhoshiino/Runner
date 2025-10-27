@@ -1,8 +1,8 @@
 #include "Player.h"
 
 
-Player::Player(sf::Vector2f spawnPosition) :
-	Entity::Entity(spawnPosition)
+Player::Player(GameStats* gameStatsRef, sf::Vector2f spawnPosition) :
+	Entity::Entity(gameStatsRef, spawnPosition)
 {
 	m_square.setSize({ 54.f, 54.f });
 	m_square.setOutlineColor(sf::Color::Green);
@@ -21,7 +21,8 @@ Player::~Player()
 void Player::update(float deltatime)
 {
 	isOnFire();
-	sf::Vector2f autoMove(-200.f, 0.f); // automatic movement vector
+	sf::Vector2f autoMove(-m_gameStats->getConveyorSpeed(), 0.f); // automatic movement vector
+	m_speed = m_gameStats->getConveyorSpeed() * m_CONVEYOR_SPEED_FACTOR;
 
 	// Normalize manual movement velocity
 	if (m_velocity.x != 0.f || m_velocity.y != 0.f)

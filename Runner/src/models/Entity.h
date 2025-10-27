@@ -2,12 +2,14 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+#include "../core/GameStats.h"
+
 class Entity 
 {
 public:
 
-	Entity(sf::Vector2f spawnPosition);
-	Entity();
+	Entity(GameStats* gameStats, sf::Vector2f spawnPosition);
+	Entity(GameStats* gameStats);
 
 	virtual ~Entity();
 
@@ -26,6 +28,9 @@ public:
 
 
 protected:
+
+	GameStats* m_gameStats;
+
 	sf::Vector2f m_position = { 0.f, 0.f };
 	sf::Vector2f m_velocity = { 0.f, 0.f };
 	sf::FloatRect m_hitbox;

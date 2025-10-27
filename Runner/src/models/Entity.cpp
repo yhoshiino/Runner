@@ -1,7 +1,7 @@
 #include "Entity.h"
 
-Entity::Entity(sf::Vector2f spawnPosition) :
-	m_position(spawnPosition)
+Entity::Entity(GameStats* gameStatsRef, sf::Vector2f spawnPosition) :
+	m_gameStats(gameStatsRef), m_position(spawnPosition)
 {
 	m_square.setPosition(m_position);
 	m_square.setSize({ m_SIZE, m_SIZE });
@@ -12,7 +12,7 @@ Entity::Entity(sf::Vector2f spawnPosition) :
 	m_hitbox = sf::FloatRect(m_position, { m_SIZE, m_SIZE });
 }
 
-Entity::Entity()
+Entity::Entity(GameStats* gameStatsRef): m_gameStats(gameStatsRef)
 {
 	m_square.setPosition(m_position);
 	m_square.setSize({ m_SIZE, m_SIZE });
@@ -29,7 +29,7 @@ Entity::~Entity()
 
 void Entity::update(float deltaTime)
 {
-	m_velocity.x -= 200.f; // Moves on the left
+	m_velocity.x -= m_gameStats->getConveyorSpeed(); // Moves on the left
 	m_position += m_velocity * deltaTime;
 
 	m_hitbox.position = m_position;

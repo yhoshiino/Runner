@@ -9,7 +9,7 @@ class EntityManager
 {
 public:
 
-	EntityManager();
+	EntityManager(GameStats* gameStatsRef);
 	~EntityManager();
 
 	void updateAll(float deltaTime);
@@ -22,6 +22,7 @@ public:
 	void resetPlayerPosition();
 
 private:
+	GameStats* m_gameStats;
 
 	std::vector<std::unique_ptr<Entity>> m_obstacles;
 	std::unique_ptr<Player> m_player;
