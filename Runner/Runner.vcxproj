@@ -20,6 +20,8 @@
     <ClCompile Include="src\uis\UIManager.cpp" />
     <ClCompile Include="src\uis\UIElement.cpp" />
     <ClCompile Include="src\uis\UIButtonElement.cpp" />
+    <ClCompile Include="src\uis\UITextElement.cpp" />
+    <ClCompile Include="src\uis\UITextureElement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\EntityManager.h" />
@@ -30,6 +32,8 @@
     <ClInclude Include="src\uis\UIManager.h" />
     <ClInclude Include="src\uis\UIElement.h" />
     <ClInclude Include="src\uis\UIButtonElement.h" />
+    <ClInclude Include="src\uis\UITextElement.h" />
+    <ClInclude Include="src\uis\UITextureElement.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\core\level_test.txt" />

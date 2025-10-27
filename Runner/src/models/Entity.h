@@ -11,11 +11,11 @@ public:
 
 	virtual ~Entity();
 
-	virtual void update(float deltatime);
-	virtual void draw(sf::RenderWindow& window);
+	virtual void update(float deltatime) = 0;
+	virtual void draw(sf::RenderWindow& window) = 0;
 
-	virtual bool isColliding(sf::FloatRect otherHitbox);
-	virtual void onHit(Entity * otherEntity);
+	virtual bool isColliding(sf::FloatRect otherHitbox) = 0;
+	virtual void onHit(Entity * otherEntity) = 0;
 
 	void setPosition(sf::Vector2f newPos);
 	sf::Vector2f getPosition();
