@@ -42,7 +42,6 @@ private:
 
 	int m_health = 5;
 	
-
 	enum class State 
 	{
 		ALIVE,

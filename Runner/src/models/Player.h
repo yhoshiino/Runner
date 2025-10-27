@@ -19,7 +19,6 @@ public:
 
 	void reset();
 
-
 	sf::Vector2f getDesiredVelocity() const;
 
 private:
