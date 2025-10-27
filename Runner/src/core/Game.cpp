@@ -40,8 +40,6 @@ void Game::run()
             else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
                 if (keyPressed->scancode == sf::Keyboard::Scancode::Escape)
                     m_window.close();
-                
-
             }
             
         }

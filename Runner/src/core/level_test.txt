@@ -1,7 +1,7 @@
 ENTITY: uid=0; position={2300, 288};
 ENTITY: uid=0; position={2300, 360};
 ENTITY: uid=0; position={2300, 432};
-ENTITY: uid=0; position={2300, 504};
+# ENTITY: uid=0; position={2300, 504};
 ENTITY: uid=0; position={2300, 576};
 ENTITY: uid=0; position={2300, 648};
 ENTITY: uid=0; position={2300, 720};

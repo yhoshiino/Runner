@@ -74,3 +74,4 @@ sf::FloatRect Entity::getHitbox() const
 void Entity::setPosition(sf::Vector2f newPos) {
 	m_position = newPos;
 }
+
