@@ -4,6 +4,7 @@
 #include "EntityManager.h"
 
 #include "SFML/Graphics.hpp"
+#include "../uis/UIManager.h"
 
 class Game
 {
@@ -35,6 +36,6 @@ private:
 	sf::View m_gameView;
 
 private:
-
+	UIManager m_uiManager;
 	void shutDown();
 };

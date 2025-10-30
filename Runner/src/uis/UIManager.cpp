@@ -23,15 +23,15 @@ void UIManager::updateUIs(float deltaTime)
 
 // Render all UI elements
 // Handles world-space vs screen-space rendering by switching the view as needed
-void UIManager::renderUIs(sf::RenderWindow& window, sf::View& uiView, sf::View& worldView)
+void UIManager::renderUIs(sf::RenderWindow& window)
 {
     for (auto& element : m_uiElements)
     {
         if (element->isWorldSpaceUi)
         {
-            window.setView(worldView);
+
             element->render(window);
-            window.setView(uiView);
+
         }
         else
         {
@@ -56,6 +56,14 @@ void UIManager::handleUIEvents(const sf::Event& event, const sf::RenderWindow& w
     }
 }
 
+void UIManager::quit()
+{
+    m_pendingAction = [this]() {
+        std::cout << "Quit!!!" << std::endl;
+    };
+
+}
+
 void UIManager::generateMainMenuUIs() {
 
     m_uiElements.clear();
@@ -70,12 +78,12 @@ void UIManager::generateMainMenuUIs() {
         sf::Vector2f{0.f,0.f},
         sf::Vector2f{1920 * 1/3, 100.f},
         "Robot Run",
-        70
+        100
     );
 
     auto playButton = std::make_shared<UIButtonElement>(
-        sf::Vector2f{ 100.f, 50.f },
-        sf::Vector2f{ 1920 * 0.4f, 500.f },
+        sf::Vector2f{ 200.f, 100.f },
+        sf::Vector2f{ 1920 * 0.4f + 120, 500.f },
         "PLAY"
     );
     playButton->setCallback([this]
@@ -90,12 +98,13 @@ void UIManager::generateMainMenuUIs() {
     )*/
 
     auto leaveButton = std::make_shared<UIButtonElement>(
-        sf::Vector2f{100.f,50.f},
-        sf::Vector2f{ 1920 * 0.4f, 700.f },
+        sf::Vector2f{200.f,100.f},
+        sf::Vector2f{ 1920 * 0.4f + 120, 800.f },
         "QUIT"
     );
     leaveButton->setCallback([this] 
     {
+            
             
     });
 
@@ -127,38 +136,7 @@ void UIManager::generateVictoryUIs()
         });
     title->setPosition({ 1920.f / 2.f, 1080.f / 2.f });
 
-    int gainedShells = 0;
-    bool isNewUnitAvailable = false;
 
-    auto shellRewardText = std::make_shared<UITextElement>(
-        sf::Vector2f{ 200.f, 100.f },
-        sf::Vector2f{ 0.f, 0.f },
-        '+' + std::to_string(gainedShells) + " ¤",
-        60
-    );
-
-    sf::FloatRect shellsTextBound = shellRewardText->getText().getLocalBounds();
-    shellRewardText->getText().setOrigin({
-        shellsTextBound.position.x + shellsTextBound.size.x / 2.f,
-        shellsTextBound.position.y + shellsTextBound.size.y / 2.f
-        });
-    shellRewardText->setPosition({ 1920.f / 2.f, 1080.f / 2.f + 100.f });
-    shellRewardText->setTextColor(sf::Color(0, 255, 255, 255));
-
-    auto newUnitText = std::make_shared<UITextElement>(
-        sf::Vector2f{ 200.f, 100.f },
-        sf::Vector2f{ 0.f, 0.f },
-        "A NEW UNIT IS AVAILABLE IN THE UPGRADES MENU!",
-        46
-    );
-
-    sf::FloatRect unitTextBound = newUnitText->getText().getLocalBounds();
-    newUnitText->getText().setOrigin({
-        unitTextBound.position.x + unitTextBound.size.x / 2.f,
-        unitTextBound.position.y + unitTextBound.size.y / 2.f
-        });
-    newUnitText->setPosition({ 1920.f / 2.f, 1080.f / 2.f + 200.f });
-    newUnitText->setTextColor(isNewUnitAvailable ? sf::Color(255, 0, 255, 255) : sf::Color(255, 0, 255, 0));
 
     auto menuButton = std::make_shared<UIButtonElement>(
         sf::Vector2f{ 100.f, 100.f },
@@ -179,8 +157,6 @@ void UIManager::generateVictoryUIs()
         });
 
     addUIElement(title);
-    addUIElement(shellRewardText);
-    addUIElement(newUnitText);
     addUIElement(menuButton);
     addUIElement(mapButton);
 }

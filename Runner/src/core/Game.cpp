@@ -36,12 +36,15 @@ void Game::run()
                 
 
             }
-            
+            /*m_uiManager.handleUIEvents(event, m_window);*/
         }
-
+		/*m_uiManager.updateUIs(m_deltatime);*/
         m_entityManager->updateAll(m_deltatime);
+		
         m_entityManager->resetPlayerPosition();
         m_window.clear();
+        /*m_uiManager.generateMainMenuUIs();
+		m_uiManager.renderUIs(m_window);*/
         m_window.draw(conveyor);
         m_window.draw(fire);
 

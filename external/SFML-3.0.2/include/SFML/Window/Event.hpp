@@ -378,7 +378,7 @@ private:
     }
 
     template <typename T>
-    static constexpr bool isEventSubtype = isInParameterPack<T>(decltype (&m_data)(nullptr));
+    static constexpr bool isEventSubtype = isInParameterPack<T>(static_cast<const decltype(m_data)*>(nullptr));
 
     friend class WindowBase;
 
