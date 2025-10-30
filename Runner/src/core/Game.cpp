@@ -68,15 +68,13 @@ void Game::run()
                 m_entityManager->spawnEntity(0, { 2000.f, y });
             }
         }
-
         m_entityManager->updateAll(m_deltatime);
+		
         m_entityManager->resetPlayerPosition();
         m_window.clear();
         m_window.draw(conveyor);
         m_window.draw(fire);
 
-        m_window.draw(conveyor);
-        m_window.draw(fire);
         m_entityManager->drawAll(m_window);
 
         m_window.display();

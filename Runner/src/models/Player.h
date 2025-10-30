@@ -18,7 +18,7 @@ public:
 
 	bool isOnFire();
 
-	void reset();
+	void resetPlayer();
 
 	sf::Vector2f getDesiredVelocity() const;
 	float getConveyorSpeedFactor() const;

@@ -18,6 +18,11 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\models\Entity.cpp" />
     <ClCompile Include="src\models\Player.cpp" />
+    <ClCompile Include="src\uis\UIManager.cpp" />
+    <ClCompile Include="src\uis\UIElement.cpp" />
+    <ClCompile Include="src\uis\UIButtonElement.cpp" />
+    <ClCompile Include="src\uis\UITextElement.cpp" />
+    <ClCompile Include="src\uis\UITextureElement.cpp" />
     <ClCompile Include="src\utils\CollisionUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -25,9 +30,13 @@
     <ClInclude Include="src\core\Game.h" />
     <ClInclude Include="src\core\GameStats.h" />
     <ClInclude Include="src\core\LevelManager.h" />
-    <ClInclude Include="src\core\MenuManager.h" />
     <ClInclude Include="src\models\Entity.h" />
     <ClInclude Include="src\models\Player.h" />
+    <ClInclude Include="src\uis\UIManager.h" />
+    <ClInclude Include="src\uis\UIElement.h" />
+    <ClInclude Include="src\uis\UIButtonElement.h" />
+    <ClInclude Include="src\uis\UITextElement.h" />
+    <ClInclude Include="src\uis\UITextureElement.h" />
     <ClInclude Include="src\utils\CollisionUtils.h" />
   </ItemGroup>
   <ItemGroup>
