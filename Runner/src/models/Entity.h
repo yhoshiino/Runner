@@ -2,39 +2,49 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+#include "../core/GameStats.h"
+
 class Entity 
 {
 public:
 
-	Entity(sf::Vector2f spawnPosition);
-	Entity() = default;
+	Entity(GameStats* gameStats, sf::Vector2f spawnPosition);
+	Entity(GameStats* gameStats);
 
 	virtual ~Entity();
 
-	virtual void update(float deltatime);
+	virtual void update(float deltaTime);
 	virtual void draw(sf::RenderWindow& window);
 
-	virtual bool isColliding(sf::FloatRect otherHitbox);
+	virtual bool isColliding(sf::FloatRect otherHitbox, float deltaTime);
 	virtual void onHit(Entity * otherEntity);
 
+	void addVelocity(sf::Vector2f newVelocity);
+
+	sf::Vector2f getPosition() const;
+	sf::Vector2f getPreviousPosition() const;
+	float getConveyorSpeed() const;
+	sf::FloatRect getHitbox() const;
+
 	void setPosition(sf::Vector2f newPos);
-	sf::Vector2f getPosition();
+
 
 protected:
+
+	GameStats* m_gameStats;
+
 	sf::Vector2f m_position = { 0.f, 0.f };
+	sf::Vector2f m_previousPosition = { 0.f, 0.f }; // Used for the CCD algorithm (Continuous Collision Detection)
 	sf::Vector2f m_velocity = { 0.f, 0.f };
 	sf::FloatRect m_hitbox;
 
-	sf::RectangleShape m_square;
+	sf::RectangleShape m_square; // For debugging
 
 	const float m_SIZE = 72.f;
 private:
 
 	int m_health = 5;
 	
-
-	
-
 	enum class State 
 	{
 		ALIVE,
@@ -44,6 +54,4 @@ private:
 	State m_state = State::ALIVE;
 
 	bool m_isActive = false;
-
-
 };

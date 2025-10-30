@@ -5,26 +5,25 @@
 #include "../models/Player.h"
 #include "SFML/Graphics.hpp"
 
-
-//class Obstacle;
-
 class EntityManager
 {
 public:
 
-	EntityManager();
+	EntityManager(GameStats* gameStatsRef);
 	~EntityManager();
 
-
-	void updateAll(float deltatime);
+	void updateAll(float deltaTime);
 	void drawAll(sf::RenderWindow& window);
 	
-	void updateColisions();
+	void updateColisions(float deltaTime);
+	void applyPlayerMovement(float deltaTime);
 	void spawnEntity(int entityUID, sf::Vector2f position);
 
 	void resetPlayerPosition();
 
 private:
-	/*std::vector<std::unique_ptr<Obstacle>> m_obstacles;*/
+	GameStats* m_gameStats;
+
+	std::vector<std::unique_ptr<Entity>> m_obstacles;
 	std::unique_ptr<Player> m_player;
 };

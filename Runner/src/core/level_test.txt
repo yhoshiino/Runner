@@ -1,3 +1,23 @@
-ENTITY: uid=0; position={0, 0};
-ENTITY: uid=5; position={100, 30};
-ENTITY: uid=2; position={400, 500};
+# ENTITY: uid=0; position={2300, 288};
+# ENTITY: uid=0; position={2300, 360};
+# ENTITY: uid=0; position={2300, 432};
+# ENTITY: uid=0; position={2300, 504};
+# ENTITY: uid=0; position={2300, 576};
+# ENTITY: uid=0; position={2300, 648};
+# ENTITY: uid=0; position={2300, 720};
+
+# ENTITY: uid=0; position={3300, 288};
+# ENTITY: uid=0; position={3300, 360};
+# ENTITY: uid=0; position={3300, 432};
+# ENTITY: uid=0; position={2300, 504};
+# ENTITY: uid=0; position={3300, 576};
+# ENTITY: uid=0; position={3300, 648};
+# ENTITY: uid=0; position={3300, 720};
+
+# ENTITY: uid=0; position={4300, 288};
+# ENTITY: uid=0; position={4300, 360};
+# ENTITY: uid=0; position={4300, 432};
+# ENTITY: uid=0; position={2300, 504};
+# ENTITY: uid=0; position={4300, 576};
+# ENTITY: uid=0; position={4300, 648};
+# ENTITY: uid=0; position={4300, 720};

@@ -2,6 +2,7 @@
 
 #include "LevelManager.h"
 #include "EntityManager.h"
+#include "GameStats.h"
 
 #include "SFML/Graphics.hpp"
 
@@ -29,12 +30,14 @@ private:
 	const int m_FRAME_RATE = 60;
 	const sf::Vector2u m_logicalResolution = {1920, 1080};
 
-	std::unique_ptr<EntityManager> m_entityManager;
-	std::unique_ptr<LevelManager> m_levelManager;
+	std::unique_ptr<EntityManager> m_entityManager = nullptr;
+	std::unique_ptr<LevelManager> m_levelManager = nullptr;
+	std::unique_ptr<GameStats> m_gameStats = nullptr;
 
 	sf::View m_gameView;
 
 private:
 
+	void initViews();
 	void shutDown();
 };

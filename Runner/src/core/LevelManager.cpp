@@ -4,13 +4,11 @@
 #include <fstream>
 #include <sstream>
 
-LevelManager::LevelManager() 
-{
-}
+LevelManager::LevelManager(EntityManager* entityManagerRef) : m_entityManager(entityManagerRef)
+{}
 
 LevelManager::~LevelManager()
-{
-}
+{}
 
 void LevelManager::load(int levelUID)
 {
@@ -18,11 +16,16 @@ void LevelManager::load(int levelUID)
 	parseLevelFile("src/core/level_test.txt");
 	spawnLevelEntities();
 
+	m_currentLevelUID = levelUID;
+
 	m_isLoaded = true;
 }
 
 void LevelManager::unload()
 {
+	m_entitySpawnDataList.clear();
+
+	m_currentLevelUID = -1;
 	m_isLoaded = false;
 }
 
@@ -123,11 +126,10 @@ void LevelManager::spawnLevelEntities()
 {
 	for(const auto& spawnData : m_entitySpawnDataList)
 	{
-		// Here you would call the entity manager to create the entity
-		// EntityManager::spawnEntity(spawnData.entityUID, spawnData.spawnPosition);
-
 		std::cout << "Spawning entity UID: " << spawnData.entityUID 
 				  << " at position: (" << spawnData.spawnPosition.x 
 				  << ", " << spawnData.spawnPosition.y << ")" << std::endl;
+
+		m_entityManager->spawnEntity(spawnData.entityUID, spawnData.spawnPosition);
 	}
 }
