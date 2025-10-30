@@ -1,4 +1,6 @@
 #include "EntityManager.h"
+#include "../utils/CollisionUtils.h"
+
 #include <memory>
 
 EntityManager::EntityManager(GameStats* gameStatsRef):
@@ -22,16 +24,16 @@ void EntityManager::updateAll(float deltaTime)
 
 	//std::cout << "Obstacles count: " << m_obstacles.size() << std::endl;
 
-	updateColisions(deltaTime);
-
 	for(auto& obstacle : m_obstacles)
 	{
 		obstacle->update(deltaTime);
 	}
 
 	m_player->handleInputs();
-	applyPlayerMovement();
+	applyPlayerMovement(deltaTime);
 	m_player->update(deltaTime);
+
+	updateColisions(deltaTime);
 }
 
 void EntityManager::drawAll(sf::RenderWindow& window) 
@@ -49,6 +51,8 @@ void EntityManager::updateColisions(float deltaTime)
 	if (!m_player) return;
 
 	const sf::FloatRect playerHitbox = m_player->getHitbox();
+	const sf::Vector2f prevPos = m_player->getPreviousPosition();
+	const sf::Vector2f currPos = m_player->getPosition();
 
 	for (auto& obstacle : m_obstacles)
 	{
@@ -56,43 +60,42 @@ void EntityManager::updateColisions(float deltaTime)
 
 		const sf::FloatRect obstacleHitbox = obstacle->getHitbox();
 
-		// Check collision
-		if (m_player->isColliding(obstacleHitbox, deltaTime))
+		// Continuous Collision Detection (CCD)
+		if (utils::lineIntersectsRect(prevPos, currPos, obstacleHitbox))
 		{
-
-			//std::cout << "Collision detected between player and obstacle!" << std::endl;
-
-			// Notify both entities
 			m_player->onHit(obstacle.get());
 			obstacle->onHit(m_player.get());
 		}
 	}
 }
 
-void EntityManager::applyPlayerMovement()
+void EntityManager::applyPlayerMovement(float deltaTime)
 {
-	const sf::Vector2f desiredVelocity = m_player->getDesiredVelocity();
-	const sf::FloatRect playerHitbox = m_player->getHitbox();
+	const float conveyorSpeed = m_gameStats->getConveyorSpeed();
+	const sf::Vector2f conveyorVelocity(-conveyorSpeed, 0.f);
+
+	const sf::Vector2f desiredVelocity = m_player->getDesiredVelocity() * m_player->getSpeed();
+	const sf::Vector2f totalVelocity = conveyorVelocity + desiredVelocity;
+
+	sf::FloatRect playerHitbox = m_player->getHitbox();
 
 	sf::FloatRect nextHitboxX = playerHitbox;
-	nextHitboxX.position.x += desiredVelocity.x;
+	nextHitboxX.position.x += totalVelocity.x * deltaTime;
 
 	sf::FloatRect nextHitboxY = playerHitbox;
-	nextHitboxY.position.y += desiredVelocity.y;
+	nextHitboxY.position.y += totalVelocity.y * deltaTime;
 
 	bool collidesX = false;
 	bool collidesY = false;
 
 	for (const auto& obstacle : m_obstacles)
 	{
-		if (!obstacle)
-			continue;
+		if (!obstacle) continue;
 
 		const sf::FloatRect& obstacleHitbox = obstacle->getHitbox();
 
 		if (nextHitboxX.findIntersection(obstacleHitbox).has_value())
 			collidesX = true;
-
 		if (nextHitboxY.findIntersection(obstacleHitbox).has_value())
 			collidesY = true;
 
@@ -100,13 +103,12 @@ void EntityManager::applyPlayerMovement()
 			break;
 	}
 
-	sf::Vector2f movementVelocity
-	{
-		collidesX ? 0.f : desiredVelocity.x,
-		collidesY ? 0.f : desiredVelocity.y,
+	sf::Vector2f finalVelocity{
+		collidesX ? 0.f : totalVelocity.x,
+		collidesY ? 0.f : totalVelocity.y
 	};
 
-	m_player->addVelocity(movementVelocity);
+	m_player->move(finalVelocity * deltaTime);
 }
 
 void EntityManager::spawnEntity(int entityUID, sf::Vector2f position) 

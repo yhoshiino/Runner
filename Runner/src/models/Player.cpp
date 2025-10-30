@@ -18,25 +18,20 @@ Player::~Player()
 
 }
 
-void Player::update(float deltatime)
+void Player::update(float deltaTime)
 {
 	isOnFire();
-	sf::Vector2f autoMove(-m_gameStats->getConveyorSpeed(), 0.f); // automatic movement vector
-	m_speed = m_gameStats->getConveyorSpeed() * m_CONVEYOR_SPEED_FACTOR;
 
-	// Normalize manual movement velocity
+	// Normalize movement velocity
 	if (m_velocity.x != 0.f || m_velocity.y != 0.f)
 	{
 		float len = std::sqrt(m_velocity.x * m_velocity.x + m_velocity.y * m_velocity.y);
 		m_velocity /= len;
 	}
 
-	m_position += autoMove * deltatime;                  // apply automatic movement
-	m_position += m_velocity * m_speed * deltatime;		// apply speed movement
-	m_square.setPosition(m_position);                   // update square position
-	m_hitbox.position = m_position;                     // update hitbox position
+	m_speed = m_gameStats->getConveyorSpeed() * m_CONVEYOR_SPEED_FACTOR;
 
-	m_velocity = { 0.f, 0.f }; // reset velocity for next frame
+	m_velocity = { 0.f, 0.f };
 }
 
 void Player::draw(sf::RenderWindow& window)
@@ -44,10 +39,20 @@ void Player::draw(sf::RenderWindow& window)
 	window.draw(m_square);
 }
 
+void Player::move(const sf::Vector2f& movementVector)
+{
+	m_previousPosition = m_position;
+
+	m_position += movementVector;
+
+	m_hitbox.position = m_position;
+	m_square.setPosition(m_position);
+}
+
 // Called when player collides with another entity (currently empty)
 void Player::onHit(Entity* otherEntity)
 {
-	m_velocity.x -= 300.f; //Temporary pushback
+	//m_velocity.x -= 300.f; //Temporary pushback
 }
 
 void Player::handleInputs()
@@ -93,9 +98,20 @@ bool Player::isOnFire()
 
 void Player::reset() {
 	m_position = { 700.f, 540.f };
+	m_previousPosition = m_position;
 }
 
 sf::Vector2f Player::getDesiredVelocity() const
 {
 	return m_desiredVelocity;
+}
+
+float Player::getSpeed() const
+{
+	return m_speed;
+}
+
+float Player::getConveyorSpeedFactor() const
+{
+	return m_CONVEYOR_SPEED_FACTOR;
 }

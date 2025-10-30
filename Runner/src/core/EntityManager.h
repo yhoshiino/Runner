@@ -16,7 +16,7 @@ public:
 	void drawAll(sf::RenderWindow& window);
 	
 	void updateColisions(float deltaTime);
-	void applyPlayerMovement();
+	void applyPlayerMovement(float deltaTime);
 	void spawnEntity(int entityUID, sf::Vector2f position);
 
 	void resetPlayerPosition();

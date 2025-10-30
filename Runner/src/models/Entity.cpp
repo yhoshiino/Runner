@@ -30,6 +30,7 @@ Entity::~Entity()
 void Entity::update(float deltaTime)
 {
 	m_velocity.x -= m_gameStats->getConveyorSpeed(); // Moves on the left
+	m_previousPosition = m_position;
 	m_position += m_velocity * deltaTime;
 
 	m_hitbox.position = m_position;
@@ -66,6 +67,11 @@ sf::Vector2f Entity::getPosition() const
 	return m_position;
 }
 
+sf::Vector2f Entity::getPreviousPosition() const
+{
+	return m_previousPosition;
+}
+
 sf::FloatRect Entity::getHitbox() const
 {
 	return m_hitbox;
@@ -73,5 +79,10 @@ sf::FloatRect Entity::getHitbox() const
 
 void Entity::setPosition(sf::Vector2f newPos) {
 	m_position = newPos;
+}
+
+float Entity::getConveyorSpeed() const
+{
+	return m_gameStats->getConveyorSpeed();
 }
 

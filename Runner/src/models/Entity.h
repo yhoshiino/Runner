@@ -22,6 +22,8 @@ public:
 	void addVelocity(sf::Vector2f newVelocity);
 
 	sf::Vector2f getPosition() const;
+	sf::Vector2f getPreviousPosition() const;
+	float getConveyorSpeed() const;
 	sf::FloatRect getHitbox() const;
 
 	void setPosition(sf::Vector2f newPos);
@@ -32,6 +34,7 @@ protected:
 	GameStats* m_gameStats;
 
 	sf::Vector2f m_position = { 0.f, 0.f };
+	sf::Vector2f m_previousPosition = { 0.f, 0.f }; // Used for the CCD algorithm (Continuous Collision Detection)
 	sf::Vector2f m_velocity = { 0.f, 0.f };
 	sf::FloatRect m_hitbox;
 

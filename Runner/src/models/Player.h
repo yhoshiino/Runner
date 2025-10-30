@@ -8,9 +8,10 @@ public:
 	Player(GameStats* gameStats, sf::Vector2f spawnPosition);
 	~Player();
 
-	void update(float deltatime) override;
+	void update(float deltaTime) override;
 	void draw(sf::RenderWindow& window) override;
 
+	void move(const sf::Vector2f& movementVector);
 	void onHit(Entity* otherEntity) override;
 
 	void handleInputs();
@@ -20,6 +21,8 @@ public:
 	void reset();
 
 	sf::Vector2f getDesiredVelocity() const;
+	float getConveyorSpeedFactor() const;
+	float getSpeed() const;
 
 private:
 
