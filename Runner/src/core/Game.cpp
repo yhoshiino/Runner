@@ -65,7 +65,7 @@ void Game::run()
             for (int i = 0; i < entitiesToSpawn; ++i)
             {
                 float y = 288.f + static_cast<float>(rand() % (720 - 288 + 1));
-                m_entityManager->spawnEntity(0, { 2000.f, y });
+                m_entityManager->spawnEntity({ 2000.f, y });
             }
         }
 

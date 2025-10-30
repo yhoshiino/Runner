@@ -130,6 +130,6 @@ void LevelManager::spawnLevelEntities()
 				  << " at position: (" << spawnData.spawnPosition.x 
 				  << ", " << spawnData.spawnPosition.y << ")" << std::endl;
 
-		m_entityManager->spawnEntity(spawnData.entityUID, spawnData.spawnPosition);
+		m_entityManager->spawnEntity(spawnData.spawnPosition);
 	}
 }

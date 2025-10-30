@@ -4,12 +4,12 @@
 Player::Player(GameStats* gameStatsRef, sf::Vector2f spawnPosition) :
 	Entity::Entity(gameStatsRef, spawnPosition)
 {
-	m_square.setSize({ 54.f, 54.f });
+	m_square.setSize({ m_PLAYER_SIZE, m_PLAYER_SIZE });
 	m_square.setOutlineColor(sf::Color::Green);
 	m_square.setOutlineThickness(2.f);
 	m_square.setFillColor(sf::Color::Transparent);
 
-	m_hitbox.size = { 54.f, 54.f };
+	m_hitbox.size = { m_PLAYER_SIZE, m_PLAYER_SIZE };
 }
 
 

@@ -17,7 +17,9 @@ public:
 	
 	void updateColisions(float deltaTime);
 	void applyPlayerMovement(float deltaTime);
-	void spawnEntity(int entityUID, sf::Vector2f position);
+
+	void spawnEntity(sf::Vector2f position);
+	void spawnEntity(std::unique_ptr<Entity> entityPtr);
 
 	void resetPlayerPosition();
 

@@ -29,6 +29,8 @@ Entity::~Entity()
 
 void Entity::update(float deltaTime)
 {
+	if (m_position.x <= 1900.f) m_isActive = true;
+
 	m_velocity.x -= m_gameStats->getConveyorSpeed(); // Moves on the left
 	m_previousPosition = m_position;
 	m_position += m_velocity * deltaTime;
@@ -75,6 +77,11 @@ sf::Vector2f Entity::getPreviousPosition() const
 sf::FloatRect Entity::getHitbox() const
 {
 	return m_hitbox;
+}
+
+bool Entity::isActive() const
+{
+	return m_isActive;
 }
 
 void Entity::setPosition(sf::Vector2f newPos) {

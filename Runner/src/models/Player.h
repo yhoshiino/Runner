@@ -26,6 +26,7 @@ public:
 
 private:
 
+	const float m_PLAYER_SIZE = 54.f;
 	float m_speed = 100.f;
 	const float m_CONVEYOR_SPEED_FACTOR = 1.75f; // How much faster is the player compared to the conveyor speed
 

@@ -40,6 +40,9 @@ void EntityManager::drawAll(sf::RenderWindow& window)
 {
 	for (auto& obstacle : m_obstacles)
 	{
+		if (!obstacle) continue;
+		if (!obstacle->isActive()) continue;
+
 		obstacle->draw(window);
 	}
 
@@ -57,6 +60,7 @@ void EntityManager::updateColisions(float deltaTime)
 	for (auto& obstacle : m_obstacles)
 	{
 		if (!obstacle) continue;
+		if (!obstacle->isActive()) continue;
 
 		const sf::FloatRect obstacleHitbox = obstacle->getHitbox();
 
@@ -141,14 +145,16 @@ void EntityManager::applyPlayerMovement(float deltaTime)
 	//std::cout << "[Final Move Vector]: " << moveVector.x << ", " << moveVector.y << std::endl;
 }
 
-void EntityManager::spawnEntity(int entityUID, sf::Vector2f position) 
+void EntityManager::spawnEntity(sf::Vector2f position) 
 {
-	// The UID will have more use in the future
-
 	auto newEntity = std::make_unique<Entity>(m_gameStats, position);
 	m_obstacles.push_back(std::move(newEntity));
 }
 
+void EntityManager::spawnEntity(std::unique_ptr<Entity> entityPtr)
+{
+	m_obstacles.push_back(std::move(entityPtr));
+}
 
 void EntityManager::resetPlayerPosition() {
 	if (m_player->isOnFire()) {
