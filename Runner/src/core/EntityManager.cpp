@@ -71,22 +71,26 @@ void EntityManager::updateColisions(float deltaTime)
 
 void EntityManager::applyPlayerMovement(float deltaTime)
 {
-	const float conveyorSpeed = m_gameStats->getConveyorSpeed();
-	const sf::Vector2f conveyorVelocity(-conveyorSpeed, 0.f);
+	const float CONVEYOR_SPEED = m_gameStats->getConveyorSpeed();
+	const sf::Vector2f CONVEYOR_VELOCITY{-CONVEYOR_SPEED, 0.f};
 
-	const sf::Vector2f desiredVelocity = m_player->getDesiredVelocity() * m_player->getSpeed();
-	const sf::Vector2f totalVelocity = conveyorVelocity + desiredVelocity;
+	const float LEFT_X_COLLISION_OFFSET = 1.f; // In pxs
+	const float EPSILON = 0.0001f;
+
+	const sf::Vector2f DESIRED_POSITION = m_player->getDesiredVelocity() * m_player->getSpeed();
+	const sf::Vector2f TOTAL_VELOCITY = CONVEYOR_VELOCITY + DESIRED_POSITION;
 
 	sf::FloatRect playerHitbox = m_player->getHitbox();
 
 	sf::FloatRect nextHitboxX = playerHitbox;
-	nextHitboxX.position.x += totalVelocity.x * deltaTime;
+	nextHitboxX.position.x += TOTAL_VELOCITY.x * deltaTime;
 
 	sf::FloatRect nextHitboxY = playerHitbox;
-	nextHitboxY.position.y += totalVelocity.y * deltaTime;
+	nextHitboxY.position.y += TOTAL_VELOCITY.y * deltaTime;
 
 	bool collidesX = false;
 	bool collidesY = false;
+	bool collideFromLeft = false;
 
 	for (const auto& obstacle : m_obstacles)
 	{
@@ -95,7 +99,26 @@ void EntityManager::applyPlayerMovement(float deltaTime)
 		const sf::FloatRect& obstacleHitbox = obstacle->getHitbox();
 
 		if (nextHitboxX.findIntersection(obstacleHitbox).has_value())
+		{
 			collidesX = true;
+
+			// Determine if collision happens from the left or right
+			const float playerCenterX = playerHitbox.position.x + playerHitbox.size.x * 0.5f;
+			const float obstacleCenterX = obstacleHitbox.position.x + obstacleHitbox.size.x * 0.5f;
+
+			// If centers are different enough use that. Otherwise fall back to velocity sign.
+			if (std::abs(playerCenterX - obstacleCenterX) > EPSILON)
+			{
+				collideFromLeft = (playerCenterX < obstacleCenterX);
+			}
+			else
+			{
+				// Exact edge case: use movement direction to decide
+				if (TOTAL_VELOCITY.x > 0.f) collideFromLeft = true;
+				else if (TOTAL_VELOCITY.x < 0.f) collideFromLeft = false;
+				// if TOTAL_VELOCITY.x == 0, leave previous value (default false)
+			}
+		}
 		if (nextHitboxY.findIntersection(obstacleHitbox).has_value())
 			collidesY = true;
 
@@ -104,11 +127,18 @@ void EntityManager::applyPlayerMovement(float deltaTime)
 	}
 
 	sf::Vector2f finalVelocity{
-		collidesX ? 0.f : totalVelocity.x,
-		collidesY ? 0.f : totalVelocity.y
+		collidesX ? CONVEYOR_VELOCITY.x : TOTAL_VELOCITY.x,
+		collidesY ? CONVEYOR_VELOCITY.y : TOTAL_VELOCITY.y
 	};
 
-	m_player->move(finalVelocity * deltaTime);
+	sf::Vector2f moveVector = finalVelocity * deltaTime;
+
+	if (collidesX && collideFromLeft)
+		moveVector.x -= LEFT_X_COLLISION_OFFSET;
+
+	m_player->move(moveVector);
+
+	//std::cout << "[Final Move Vector]: " << moveVector.x << ", " << moveVector.y << std::endl;
 }
 
 void EntityManager::spawnEntity(int entityUID, sf::Vector2f position) 

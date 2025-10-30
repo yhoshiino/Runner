@@ -51,7 +51,7 @@ void Game::run()
         m_gameStats->updateConveyorSpeed(m_deltatime);
         m_gameStats->updateDistance(0.2f, m_deltatime);
 
-        std::cout << "[SCORE]: " << std::ceil(m_gameStats->getScore()) << std::endl;
+        //std::cout << "[SCORE]: " << std::ceil(m_gameStats->getScore()) << std::endl;
 
         // TEMPORARY SPAWN
         spawnAccumulator += m_gameStats->getConveyorSpeed() * m_deltatime;
