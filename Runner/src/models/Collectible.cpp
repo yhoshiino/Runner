@@ -1,4 +1,5 @@
 #include "Collectible.h"
+#include "Player.h"
 #include "../core/GameStats.h"
 
 Collectible::Collectible(GameStats* gameStats, sf::Vector2f spawnPosition, char collectibleUID): 
@@ -29,5 +30,8 @@ Collectible::Collectible(GameStats* gameStats, char collectibleUID):
 
 void Collectible::onHit(Entity* otherEntity)
 {
+	if (!dynamic_cast<Player*>(otherEntity)) return; // Only triggers when the player touches it
+
+	std::cout << "COLLECTIBLE TAKEN\n";
 	m_isActive = false;
 }

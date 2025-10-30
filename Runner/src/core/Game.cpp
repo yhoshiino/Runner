@@ -66,6 +66,7 @@ void Game::run()
             {
                 float y = 288.f + static_cast<float>(rand() % (720 - 288 + 1));
                 m_entityManager->spawnEntity({ 2000.f, y });
+                m_entityManager->spawnCollectible(sf::Vector2f{ 2000.f - 100, y }, 't');
             }
         }
 
