@@ -89,10 +89,11 @@ void Game::run()
 
         if (Running) {
 			m_gameState = GameState::Playing;
-            /*m_entityManager->resetPlayerPosition();*/
+            
             m_entityManager->updateAll(m_deltatime);
         }
         else if (!Running) {
+            m_entityManager->resetPlayerPosition();
             m_gameState = GameState::MainMenu;
         }
 
@@ -129,7 +130,6 @@ void Game::run()
             m_uiManager.generateDefeatUIs();
             m_uiManager.renderUIs(m_window);
             m_window.display();
-            std::cout << "Defeat!" << std::endl;
         }
         
     }
