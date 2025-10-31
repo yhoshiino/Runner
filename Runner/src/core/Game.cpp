@@ -49,6 +49,7 @@ void Game::run()
             m_uiManager.handleUIEvents(*event, m_window);
         }
         // TEMPORARY handle game state/change window
+        /*
         if (m_gameState == GameState::MainMenu)
         {
             m_uiManager.generateMainMenuUIs();
@@ -60,7 +61,7 @@ void Game::run()
             }
 
             m_uiManager.renderUIs(m_window);
-        }
+        }*/
 
 
         m_gameStats->updateConveyorSpeed(m_deltatime);
@@ -84,19 +85,18 @@ void Game::run()
                 m_entityManager->spawnCollectible(sf::Vector2f{ 2000.f - 100, y }, 't');
             }
         }
-		m_uiManager.updateUIs(m_deltatime);
+		//m_uiManager.updateUIs(m_deltatime);
         m_entityManager->updateAll(m_deltatime);
 		
         m_entityManager->resetPlayerPosition();
         m_window.clear();
-		m_uiManager.generateMainMenuUIs();
-		m_uiManager.renderUIs(m_window);
-        if (m_gameState == GameState::Playing) {
+		//m_uiManager.renderUIs(m_window);
+        //if (m_gameState == GameState::Playing) {
             m_window.draw(conveyor);
             m_window.draw(fire);
 
             m_entityManager->drawAll(m_window);
-        }
+        //}
         
 
         m_window.display();
