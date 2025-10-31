@@ -3,15 +3,24 @@
 #include "UIButtonElement.h"
 #include "UITextElement.h"
 #include "UITextureElement.h"
+#include "UIGameStatsText.h"
+#include "UIFinalScoreTextElement.h"
+
 #include "../core/Game.h"
 
 #include <iostream>
 
 
-UIManager::UIManager(Game* game) : m_game(game) {
+UIManager::UIManager(Game* game) : m_game(game) 
+{
 
 }
 
+
+void UIManager::initGameStats(GameStats* gameStats)
+{
+    m_gameStats = gameStats;
+}
 
 // Add a UI element to the manager
 void UIManager::addUIElement(std::shared_ptr<UIElement> element)
@@ -29,22 +38,10 @@ void UIManager::updateUIs(float deltaTime)
 }
 
 // Render all UI elements
-// Handles world-space vs screen-space rendering by switching the view as needed
 void UIManager::renderUIs(sf::RenderWindow& window)
 {
     for (auto& element : m_uiElements)
-    {
-        if (element->isWorldSpaceUi)
-        {
-
-            element->render(window);
-
-        }
-        else
-        {
-            element->render(window);
-        }
-    }
+        element->render(window);
 }
 
 // Handle input events for all UI elements
@@ -101,11 +98,9 @@ void UIManager::generateMainMenuUIs() {
                 m_pendingAction = [this]() {
                     std::cout << "play!!!" << std::endl;
                     };
-            }
-            
-           
-            
 
+                generateInGameUIs();
+            }
     });
 
     /*auto settingsButton = std::make_shared<UIButtonElement>(
@@ -130,7 +125,6 @@ void UIManager::generateMainMenuUIs() {
     addUIElement(playButton);
     /*addUIElement(settingsButton);*/
     addUIElement(leaveButton);
-
 }
 
 
@@ -148,7 +142,7 @@ void UIManager::generateDefeatUIs()
 
     auto title = std::make_shared<UITextElement>(
         sf::Vector2f{ 200.f, 100.f },
-        sf::Vector2f{ 1920.f/2.f - 180, 1080.f / 2.f - 100 },
+        sf::Vector2f{ 1920.f/2.f - 180, 1080.f / 2.f - 300},
         "Defeat...",
         72
     );
@@ -160,15 +154,27 @@ void UIManager::generateDefeatUIs()
     );
     menuButton->setCallback([this]() {
 		m_game->Running = false;
-
         });
 
-
-
+    auto score = std::make_shared<UIFinalScoreTextElement>(
+        m_gameStats
+    );
 
     addUIElement(bg);
     addUIElement(title);
+    addUIElement(score);
     addUIElement(menuButton);
+}
+
+void UIManager::generateInGameUIs()
+{
+    m_uiElements.clear();
+
+    auto score = std::make_shared<UIGameStatsText>(
+        m_gameStats
+    );
+
+    addUIElement(score);
 }
 
 // Check if mouse is over any UI element

@@ -8,6 +8,8 @@ Game::Game() : m_uiManager(UIManager(this))
     m_entityManager = std::make_unique<EntityManager>(m_gameStats.get());
     m_levelManager = std::make_unique<LevelManager>(m_entityManager.get());
 
+    m_uiManager.initGameStats(m_gameStats.get());
+
     initViews();
 }
 
@@ -100,18 +102,11 @@ void Game::run()
         if (m_entityManager->playerOnFire()) {
             m_gameState = GameState::Defeat;
         }
-        
-		
-        
 
         if (m_gameState == GameState::MainMenu) {
             m_entityManager->playerOnFire() == false;
             m_window.clear();
             m_uiManager.generateMainMenuUIs();
-            m_uiManager.renderUIs(m_window);
-
-            m_window.display();
-
         }
         
         if (m_gameState == GameState::Playing) {
@@ -121,17 +116,16 @@ void Game::run()
 
             m_entityManager->drawAll(m_window);
 
-            m_window.display();
         }
 
         if (m_gameState == GameState::Defeat) {
 			
             m_window.clear();
             m_uiManager.generateDefeatUIs();
-            m_uiManager.renderUIs(m_window);
-            m_window.display();
         }
         
+        m_uiManager.renderUIs(m_window);
+        m_window.display();
     }
 }
 

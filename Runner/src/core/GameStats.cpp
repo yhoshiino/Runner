@@ -25,3 +25,9 @@ float GameStats::getScore() const
 {
     return m_score;
 }
+
+float GameStats::getFinalScore()
+{
+    m_finalscore += m_score;
+    return m_finalscore;
+}

@@ -24,6 +24,8 @@
     <ClCompile Include="src\uis\UITextElement.cpp" />
     <ClCompile Include="src\uis\UITextureElement.cpp" />
     <ClCompile Include="src\utils\CollisionUtils.cpp" />
+    <ClCompile Include="src\uis\UIGameStatsText.cpp" />
+    <ClCompile Include="src\uis\UIFinalScoreTextElement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\EntityManager.h" />
@@ -38,6 +40,8 @@
     <ClInclude Include="src\uis\UITextElement.h" />
     <ClInclude Include="src\uis\UITextureElement.h" />
     <ClInclude Include="src\utils\CollisionUtils.h" />
+    <ClInclude Include="src\uis\UIGameStatsText.h" />
+    <ClInclude Include="src\uis\UIFinalScoreTextElement.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\core\level_test.txt" />
