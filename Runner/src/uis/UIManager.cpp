@@ -56,13 +56,14 @@ void UIManager::handleUIEvents(const sf::Event& event, const sf::RenderWindow& w
     }
 }
 
-void UIManager::quit()
-{
-    m_pendingAction = [this]() {
-        std::cout << "Quit!!!" << std::endl;
-    };
 
+bool UIManager::isPlayButtonPressed() const
+{
+    // Retourne true si le bouton "Play" vient d'être cliqué
+    // (selon ton implémentation UI)
+    return m_playButtonClicked;
 }
+
 
 void UIManager::generateMainMenuUIs() {
 
@@ -104,7 +105,10 @@ void UIManager::generateMainMenuUIs() {
     );
     leaveButton->setCallback([this] 
     {
-            
+            m_pendingAction = [this]() {
+                std::cout << "Quit!!!" << std::endl;
+                };
+
             
     });
 

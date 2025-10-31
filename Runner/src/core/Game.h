@@ -7,6 +7,16 @@
 #include "SFML/Graphics.hpp"
 #include "../uis/UIManager.h"
 
+
+enum class GameState
+{
+	MainMenu,
+	Playing,
+	Victory,
+	Defeat,
+	Paused
+};
+
 class Game
 {
 public:
@@ -38,6 +48,11 @@ private:
 	sf::View m_gameView;
 
 private:
+
+	
+
+	GameState m_gameState = GameState::MainMenu;
+
 	UIManager m_uiManager;
 
 	void initViews();

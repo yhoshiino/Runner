@@ -46,7 +46,22 @@ void Game::run()
                 if (keyPressed->scancode == sf::Keyboard::Scancode::Escape)
                     m_window.close();
             }
+            m_uiManager.handleUIEvents(*event, m_window);
         }
+
+        if (m_gameState == GameState::MainMenu)
+        {
+            m_uiManager.generateMainMenuUIs();
+
+            if (m_uiManager.isPlayButtonPressed())
+            {
+                m_gameState = GameState::Playing;
+                m_levelManager->load(1);
+            }
+
+            m_uiManager.renderUIs(m_window);
+        }
+
 
         m_gameStats->updateConveyorSpeed(m_deltatime);
         m_gameStats->updateDistance(0.2f, m_deltatime);
@@ -68,10 +83,16 @@ void Game::run()
                 m_entityManager->spawnEntity(0, { 2000.f, y });
             }
         }
+		m_uiManager.updateUIs(m_deltatime);
         m_entityManager->updateAll(m_deltatime);
 		
         m_entityManager->resetPlayerPosition();
         m_window.clear();
+		m_uiManager.generateMainMenuUIs();
+		m_uiManager.renderUIs(m_window);
+        if (m_gameState == GameState::Playing) {
+
+        }
         m_window.draw(conveyor);
         m_window.draw(fire);
 

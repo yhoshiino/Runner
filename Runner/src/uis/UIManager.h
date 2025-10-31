@@ -21,9 +21,10 @@ public:
 
     bool isMouseOverUI(const sf::Vector2i& worldPosition) const;
 
-    void quit();
-
+    bool isPlayButtonPressed() const;
 private:
     std::vector<std::shared_ptr<UIElement>> m_uiElements;
     std::function<void()> m_pendingAction;
+
+    bool m_playButtonClicked = false;
 };
