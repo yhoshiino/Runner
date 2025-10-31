@@ -41,6 +41,7 @@ protected:
 	sf::RectangleShape m_square; // For debugging
 
 	int m_health = 5;
+	bool m_wasActivated = false; // Used to activate the entity only once when it enters the screen
 
 	const float m_SIZE = 72.f;
 	bool m_isActive = false;

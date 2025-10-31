@@ -49,13 +49,18 @@ void EntityManager::drawAll(sf::RenderWindow& window)
 	m_player->draw(window);
 }
 
-void EntityManager::updateColisions(float deltaTime) 
+void EntityManager::updateColisions(float deltaTime)
 {
 	if (!m_player) return;
 
-	const sf::FloatRect PLAYER_HITBOX = m_player->getHitbox();
 	const sf::Vector2f PREVIOUS_POS = m_player->getPreviousPosition();
 	const sf::Vector2f CURRENT_POS = m_player->getPosition();
+
+	const sf::FloatRect PLAYER_HITBOX = m_player->getHitbox();
+	const sf::Vector2f PLAYER_HALF_SIZE = PLAYER_HITBOX.size * 0.5f;
+
+	const sf::Vector2f PLAYER_START_CENTER = PREVIOUS_POS + PLAYER_HALF_SIZE;
+	const sf::Vector2f PLAYER_END_CENTER = CURRENT_POS + PLAYER_HALF_SIZE;
 
 	for (auto& gameObject : m_gameObjects)
 	{
@@ -64,8 +69,29 @@ void EntityManager::updateColisions(float deltaTime)
 
 		const sf::FloatRect OBJECT_HITBOX = gameObject->getHitbox();
 
-		// Continuous Collision Detection (CCD)
-		if (utils::lineIntersectsRect(PREVIOUS_POS, CURRENT_POS, OBJECT_HITBOX))
+		/*
+		* Continuous Collision Detection (CCD):
+		* We trace the player's center across its movement
+		* and check if the segment intersects the object's hitbox.
+		*/
+		bool intersects = utils::lineIntersectsRect(PLAYER_START_CENTER, PLAYER_END_CENTER, OBJECT_HITBOX);
+
+		// We check for AABB overlap here (Axis Aligned Bounding Box)
+		if (!intersects)
+		{
+			const bool OVERLAP_X =
+				PLAYER_HITBOX.position.x + PLAYER_HITBOX.size.x >= OBJECT_HITBOX.position.x &&
+				OBJECT_HITBOX.position.x + OBJECT_HITBOX.size.x >= PLAYER_HITBOX.position.x;
+
+			const bool OVERLAP_Y =
+				PLAYER_HITBOX.position.y + PLAYER_HITBOX.size.y >= OBJECT_HITBOX.position.y &&
+				OBJECT_HITBOX.position.y + OBJECT_HITBOX.size.y >= PLAYER_HITBOX.position.y;
+
+			if (OVERLAP_X && OVERLAP_Y)
+				intersects = true;
+		}
+
+		if (intersects)
 		{
 			m_player->onHit(gameObject.get());
 			gameObject->onHit(m_player.get());
@@ -162,8 +188,8 @@ void EntityManager::spawnEntity(std::unique_ptr<Entity> entityPtr)
 	m_gameObjects.push_back(std::move(entityPtr));
 }
 
-void EntityManager::resetPlayerPosition() {
-	if (m_player->isOnFire()) {
+void EntityManager::resetPlayerPosition() 
+{
+	if (m_player->isOnFire()) 
 		m_player->reset();
-	}
 }

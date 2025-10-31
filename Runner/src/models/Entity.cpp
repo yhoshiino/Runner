@@ -29,7 +29,11 @@ Entity::~Entity()
 
 void Entity::update(float deltaTime)
 {
-	if (m_position.x <= 1900.f) m_isActive = true;
+	if (m_position.x <= 1900.f && m_wasActivated == false) 
+	{
+		m_isActive = true; 
+		m_wasActivated = true;
+	}
 
 	m_velocity.x -= m_gameStats->getConveyorSpeed(); // Moves on the left
 	m_previousPosition = m_position;
