@@ -155,3 +155,8 @@ void EntityManager::resetPlayerPosition() {
 		m_player->reset();
 	}
 }
+
+bool EntityManager::playerOnFire() {
+
+	return m_player->isOnFire();
+}

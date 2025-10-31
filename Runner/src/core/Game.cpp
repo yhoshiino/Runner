@@ -1,8 +1,9 @@
 #include "Game.h"
 
-Game::Game()
+Game::Game() : m_uiManager(UIManager(this))
 {
-    m_window.create(sf::VideoMode(m_logicalResolution), "Robot Runner");
+    
+    m_window.create(sf::VideoMode(m_logicalResolution), "Robot Runner", sf::Style::Default);
     m_gameStats = std::make_unique<GameStats>();
     m_entityManager = std::make_unique<EntityManager>(m_gameStats.get());
     m_levelManager = std::make_unique<LevelManager>(m_entityManager.get());
@@ -15,8 +16,12 @@ Game::~Game()
 	shutDown();
 }
 
+
 void Game::run()
 {
+
+
+
     // Temporary spawner
     const float spawnDistance = 350.f;
     float spawnAccumulator = 0.f;
@@ -30,13 +35,15 @@ void Game::run()
 
     conveyor.setPosition({ fire.getSize().x, 576 / 2.f});
 
-	m_levelManager->load(1);
-
     m_window.setView(m_gameView);
+
+    
 
     while (m_window.isOpen())
     {
         m_deltatime = m_deltaClock.restart().asSeconds();
+
+
 
         while (const std::optional event = m_window.pollEvent())
         {
@@ -48,19 +55,7 @@ void Game::run()
             }
             m_uiManager.handleUIEvents(*event, m_window);
         }
-        // TEMPORARY handle game state/change window
-        if (m_gameState == GameState::MainMenu)
-        {
-            m_uiManager.generateMainMenuUIs();
-
-            if (m_uiManager.isPlayButtonPressed())
-            {
-                m_gameState = GameState::Playing;
-                m_levelManager->load(1);
-            }
-
-            m_uiManager.renderUIs(m_window);
-        }
+        
 
 
         m_gameStats->updateConveyorSpeed(m_deltatime);
@@ -83,22 +78,60 @@ void Game::run()
                 m_entityManager->spawnEntity(0, { 2000.f, y });
             }
         }
+
 		m_uiManager.updateUIs(m_deltatime);
-        m_entityManager->updateAll(m_deltatime);
+
+        if (Quit) {
+            m_window.close();
+        }
+
+
+
+        if (Running) {
+			m_gameState = GameState::Playing;
+            /*m_entityManager->resetPlayerPosition();*/
+            m_entityManager->updateAll(m_deltatime);
+        }
+        else if (!Running) {
+            m_gameState = GameState::MainMenu;
+        }
+
+        if (m_entityManager->playerOnFire()) {
+            m_gameState = GameState::Defeat;
+        }
+        
 		
-        m_entityManager->resetPlayerPosition();
-        m_window.clear();
-		m_uiManager.generateMainMenuUIs();
-		m_uiManager.renderUIs(m_window);
+        
+
+        if (m_gameState == GameState::MainMenu) {
+            m_entityManager->playerOnFire() == false;
+            m_window.clear();
+            m_uiManager.generateMainMenuUIs();
+            m_uiManager.renderUIs(m_window);
+
+            m_window.display();
+
+        }
+        
         if (m_gameState == GameState::Playing) {
+			m_window.clear();
             m_window.draw(conveyor);
             m_window.draw(fire);
 
             m_entityManager->drawAll(m_window);
+
+            m_window.display();
+        }
+
+        if (m_gameState == GameState::Defeat) {
+			
+            m_window.clear();
+            m_uiManager.generateDefeatUIs();
+            m_uiManager.renderUIs(m_window);
+            m_window.display();
+            std::cout << "Defeat!" << std::endl;
         }
         
-
-        m_window.display();
     }
 }
 

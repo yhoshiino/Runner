@@ -20,7 +20,7 @@ public:
 	void spawnEntity(int entityUID, sf::Vector2f position);
 
 	void resetPlayerPosition();
-
+	bool playerOnFire();
 private:
 	GameStats* m_gameStats;
 

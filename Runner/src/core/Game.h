@@ -30,7 +30,8 @@ public:
 
 	void centerWindow();
 
-
+	bool Running = false;
+	bool Quit = false;
 private:
 
 	sf::RenderWindow m_window;
@@ -49,7 +50,6 @@ private:
 
 private:
 
-	
 
 	GameState m_gameState = GameState::MainMenu;
 
