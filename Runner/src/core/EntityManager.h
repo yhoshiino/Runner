@@ -15,14 +15,15 @@ public:
 	~EntityManager();
 
 	void updateAll(float deltaTime);
-	void drawAll(sf::RenderWindow& window);
-	
 	void updateColisions(float deltaTime);
 	void applyPlayerMovement(float deltaTime);
+	void drawAll(sf::RenderWindow& window);
 
 	void spawnEntity(sf::Vector2f position);
 	void spawnCollectible(sf::Vector2f position, char uid);
 	void spawnEntity(std::unique_ptr<Entity> entityPtr);
+
+	void spawnEntitiesRandomly(int entitiesToSpawn, float deltaTime);
 
 	void resetPlayerPosition();
 

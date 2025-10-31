@@ -2,10 +2,13 @@
 
 Game::Game(): m_conveyorSprite1(m_conveyorTexture), m_conveyorSprite2(m_conveyorTexture), m_factorySprite(m_factoryTexture), m_fireSprite(m_fireTexture)
 {
-    m_window.create(sf::VideoMode(m_logicalResolution), "Robot Runner", sf::State::Fullscreen);
+    m_window.create(sf::VideoMode(m_LOGICAL_RESOLUTION), "Robot Runner", sf::State::Fullscreen);
     m_gameStats = std::make_unique<GameStats>();
     m_entityManager = std::make_unique<EntityManager>(m_gameStats.get());
     m_levelManager = std::make_unique<LevelManager>(m_entityManager.get());
+
+    // Init seed
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
 
     initGraphics();
     initViews();
@@ -22,7 +25,7 @@ void Game::run()
     const float spawnDistance = 350.f;
     float spawnAccumulator = 0.f;
 
-	m_levelManager->load(1);
+	//m_levelManager->load(1);
 
     m_window.setView(m_gameView);
 
@@ -33,52 +36,34 @@ void Game::run()
         // Poll Events
         pollEvents();
 
-        // TEMPORARY handle game state/change window
-        /*
-        if (m_gameState == GameState::MainMenu)
-        {
-            m_uiManager.generateMainMenuUIs();
-
-            if (m_uiManager.isPlayButtonPressed())
-            {
-                m_gameState = GameState::Playing;
-                m_levelManager->load(1);
-            }
-
-            m_uiManager.renderUIs(m_window);
-        }*/
-
         //std::cout << "[SCORE]: " << std::ceil(m_gameStats->getScore()) << std::endl;
-
-        // TEMPORARY SPAWN
-        spawnAccumulator += m_gameStats->getConveyorSpeed() * m_deltatime;
-        if (spawnAccumulator >= spawnDistance)
+       
+        if (m_gameState == GameState::PLAYING)
         {
-            spawnAccumulator = 0.f;
+            // Spawn random entitites
+            m_entityManager->spawnEntitiesRandomly(1 + std::rand() % 2, m_deltatime);
 
-            // Spawn between 1 and 5 entities
-            int entitiesToSpawn = 1 + (rand() % 5); // rand()%5 -> 0 à 4, +1 -> 1 à 5
+            // Updating
+            m_gameStats->updateConveyorSpeed(m_deltatime);
+            m_gameStats->updateDistance(0.2f, m_deltatime);
 
-            for (int i = 0; i < entitiesToSpawn; ++i)
-            {
-                float y = 288.f + static_cast<float>(rand() % (720 - 288 + 1));
-                m_entityManager->spawnEntity({ 2000.f, y });
-                m_entityManager->spawnCollectible(sf::Vector2f{ 2000.f - 100, y }, 't');
-            }
+            m_entityManager->updateAll(m_deltatime);
+            updateGameGraphics();
+
+            m_entityManager->resetPlayerPosition();
+
+            //std::cout << "[SCORE]: " << std::ceil(m_gameStats->getScore()) << std::endl;
         }
-
-        // Updating
-        m_gameStats->updateConveyorSpeed(m_deltatime);
-        m_gameStats->updateDistance(0.2f, m_deltatime);
-		//m_uiManager.updateUIs(m_deltatime);
-        m_entityManager->updateAll(m_deltatime);
-        updateGameGraphics();
-        m_entityManager->resetPlayerPosition();
 
         // Rendering
         m_window.clear();
-        drawGameGraphics();
-        m_entityManager->drawAll(m_window);
+
+        if (m_gameState == GameState::PLAYING)
+        {
+            drawGameGraphics();
+            m_entityManager->drawAll(m_window);
+        }
+
         m_window.display();
     }
 }
@@ -110,7 +95,7 @@ void Game::initGraphics()
 
 void Game::initViews()
 {
-    m_gameView.setSize(static_cast<sf::Vector2f>(m_logicalResolution));
+    m_gameView.setSize(static_cast<sf::Vector2f>(m_LOGICAL_RESOLUTION));
     m_gameView.setCenter(m_gameView.getSize() / 2.f);
 
     m_gameView.setViewport(sf::FloatRect({ 0.f, 0.f }, { 1.f, 1.f }));
@@ -128,7 +113,7 @@ void Game::pollEvents()
             m_window.close();
 
         // Handles buttons events, etc...
-        m_uiManager.handleUIEvents(*event, m_window);
+        //m_uiManager->handleUIEvents(*event, m_window);
 
         if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
             if (keyPressed->scancode == sf::Keyboard::Scancode::Escape)
@@ -159,4 +144,9 @@ void Game::drawGameGraphics()
     m_window.draw(m_conveyorSprite1);
     m_window.draw(m_conveyorSprite2);
     m_window.draw(m_fireSprite);
+}
+
+int Game::getSeed() const
+{
+    return m_seed;
 }

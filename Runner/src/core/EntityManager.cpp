@@ -188,6 +188,25 @@ void EntityManager::spawnEntity(std::unique_ptr<Entity> entityPtr)
 	m_gameObjects.push_back(std::move(entityPtr));
 }
 
+void EntityManager::spawnEntitiesRandomly(int entitiesToSpawn, float deltaTime)
+{
+	static const float SPAWN_DISTANCE = 200.f;
+	static float spawnAccumulator = 0.f;
+
+	spawnAccumulator += m_gameStats->getConveyorSpeed() * deltaTime;
+	if (spawnAccumulator >= SPAWN_DISTANCE)
+	{
+		spawnAccumulator = 0.f;
+		
+		for (int i = 0; i < entitiesToSpawn; ++i)
+		{
+			float y = 288.f + static_cast<float>(rand() % (720 - 288 + 1));
+			spawnEntity({ 2000.f, y });
+			spawnCollectible(sf::Vector2f{ 2000.f - 100, y }, 't');
+		}
+	}
+}
+
 void EntityManager::resetPlayerPosition() 
 {
 	if (m_player->isOnFire()) 
