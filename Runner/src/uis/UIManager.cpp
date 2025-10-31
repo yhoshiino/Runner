@@ -1,10 +1,26 @@
 #include "UIManager.h"
+
 #include "UIButtonElement.h"
 #include "UITextElement.h"
 #include "UITextureElement.h"
+#include "UIGameStatsText.h"
+#include "UIFinalScoreTextElement.h"
+
+#include "../core/Game.h"
 
 #include <iostream>
 
+
+UIManager::UIManager(Game* game) : m_game(game) 
+{
+
+}
+
+
+void UIManager::initGameStats(GameStats* gameStats)
+{
+    m_gameStats = gameStats;
+}
 
 // Add a UI element to the manager
 void UIManager::addUIElement(std::shared_ptr<UIElement> element)
@@ -22,22 +38,10 @@ void UIManager::updateUIs(float deltaTime)
 }
 
 // Render all UI elements
-// Handles world-space vs screen-space rendering by switching the view as needed
 void UIManager::renderUIs(sf::RenderWindow& window)
 {
     for (auto& element : m_uiElements)
-    {
-        if (element->isWorldSpaceUi)
-        {
-
-            element->render(window);
-
-        }
-        else
-        {
-            element->render(window);
-        }
-    }
+        element->render(window);
 }
 
 // Handle input events for all UI elements
@@ -89,9 +93,14 @@ void UIManager::generateMainMenuUIs() {
     );
     playButton->setCallback([this]
     {
-            m_pendingAction = [this]() {
-                std::cout << "play!!!" << std::endl;
-                };
+            m_game->Running = true;
+            if (m_game->Running) {
+                m_pendingAction = [this]() {
+                    std::cout << "play!!!" << std::endl;
+                    };
+
+                generateInGameUIs();
+            }
     });
 
     /*auto settingsButton = std::make_shared<UIButtonElement>(
@@ -105,11 +114,10 @@ void UIManager::generateMainMenuUIs() {
     );
     leaveButton->setCallback([this] 
     {
+            m_game->Quit = true;
             m_pendingAction = [this]() {
                 std::cout << "Quit!!!" << std::endl;
                 };
-
-            
     });
 
     addUIElement(bg);
@@ -117,72 +125,27 @@ void UIManager::generateMainMenuUIs() {
     addUIElement(playButton);
     /*addUIElement(settingsButton);*/
     addUIElement(leaveButton);
-
 }
 
 
-// Generate victory UI layout
-void UIManager::generateVictoryUIs()
-{
-    m_uiElements.clear();
-
-    auto title = std::make_shared<UITextElement>(
-        sf::Vector2f{ 200.f, 100.f },
-        sf::Vector2f{ 0.f, 0.f },
-        "Victory!",
-        72
-    );
-
-    sf::FloatRect textBounds = title->getText().getLocalBounds();
-    title->getText().setOrigin({
-        textBounds.position.x + textBounds.size.x / 2.f,
-        textBounds.position.y + textBounds.size.y / 2.f
-        });
-    title->setPosition({ 1920.f / 2.f, 1080.f / 2.f });
-
-
-
-    auto menuButton = std::make_shared<UIButtonElement>(
-        sf::Vector2f{ 100.f, 100.f },
-        sf::Vector2f{ 20.f, 1080.f - 100.f - 20.f },
-        "MENU"
-    );
-    menuButton->setCallback([this]() {
-        /* deferred action example */
-        });
-
-    auto mapButton = std::make_shared<UIButtonElement>(
-        sf::Vector2f{ 100.f, 100.f },
-        sf::Vector2f{ 150.f, 1080.f - 100.f - 20.f },
-        "MAP"
-    );
-    mapButton->setCallback([this]() {
-        /* deferred action example */
-        });
-
-    addUIElement(title);
-    addUIElement(menuButton);
-    addUIElement(mapButton);
-}
 
 // Generate defeat UI layout
 void UIManager::generateDefeatUIs()
 {
     m_uiElements.clear();
 
+    auto bg = std::make_shared<UITextureElement>(
+        sf::Vector2f{ 1920.f, 1080.f },
+        sf::Vector2f{ 0.f,0.f },
+        "assets/textures/background/runnerBG.png"
+    );
+
     auto title = std::make_shared<UITextElement>(
         sf::Vector2f{ 200.f, 100.f },
-        sf::Vector2f{ 0.f, 0.f },
+        sf::Vector2f{ 1920.f/2.f - 180, 1080.f / 2.f - 300},
         "Defeat...",
         72
     );
-
-    sf::FloatRect textBounds = title->getText().getLocalBounds();
-    title->getText().setOrigin({
-        textBounds.position.x + textBounds.size.x / 2.f,
-        textBounds.position.y + textBounds.size.y / 2.f
-        });
-    title->setPosition({ 1920.f / 2.f, 1080.f / 2.f });
 
     auto menuButton = std::make_shared<UIButtonElement>(
         sf::Vector2f{ 100.f, 100.f },
@@ -190,21 +153,28 @@ void UIManager::generateDefeatUIs()
         "MENU"
     );
     menuButton->setCallback([this]() {
-        /* deferred action example */
+		m_game->Running = false;
         });
 
-    auto mapButton = std::make_shared<UIButtonElement>(
-        sf::Vector2f{ 100.f, 100.f },
-        sf::Vector2f{ 150.f, 1080.f - 100.f - 20.f },
-        "MAP"
+    auto score = std::make_shared<UIFinalScoreTextElement>(
+        m_gameStats
     );
-    mapButton->setCallback([this]() {
-        /* deferred action example */
-        });
 
+    addUIElement(bg);
     addUIElement(title);
+    addUIElement(score);
     addUIElement(menuButton);
-    addUIElement(mapButton);
+}
+
+void UIManager::generateInGameUIs()
+{
+    m_uiElements.clear();
+
+    auto score = std::make_shared<UIGameStatsText>(
+        m_gameStats
+    );
+
+    addUIElement(score);
 }
 
 // Check if mouse is over any UI element

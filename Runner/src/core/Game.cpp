@@ -1,6 +1,7 @@
 #include "Game.h"
 
-Game::Game(): m_conveyorSprite1(m_conveyorTexture), m_conveyorSprite2(m_conveyorTexture), m_factorySprite(m_factoryTexture), m_fireSprite(m_fireTexture)
+Game::Game(): m_uiManager(UIManager(this)),
+              m_conveyorSprite1(m_conveyorTexture), m_conveyorSprite2(m_conveyorTexture), m_factorySprite(m_factoryTexture), m_fireSprite(m_fireTexture)
 {
     m_window.create(sf::VideoMode(m_LOGICAL_RESOLUTION), "Robot Runner", sf::State::Fullscreen);
     m_gameStats = std::make_unique<GameStats>();
@@ -11,6 +12,7 @@ Game::Game(): m_conveyorSprite1(m_conveyorTexture), m_conveyorSprite2(m_conveyor
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
 
     initGraphics();
+    m_uiManager.initGameStats(m_gameStats.get());
     initViews();
 }
 
@@ -19,13 +21,13 @@ Game::~Game()
 	shutDown();
 }
 
+
 void Game::run()
 {
-    // Temporary spawner variables
-    const float spawnDistance = 350.f;
-    float spawnAccumulator = 0.f;
 
     m_window.setView(m_gameView);
+
+    
 
     while (m_window.isOpen())
     {
@@ -45,6 +47,8 @@ void Game::run()
             m_gameStats->updateConveyorSpeed(m_deltatime);
             m_gameStats->updateDistance(0.2f, m_deltatime);
 
+            m_uiManager.updateUIs(m_deltatime);
+
             m_entityManager->updateAll(m_deltatime);
             updateGameGraphics();
 
@@ -56,12 +60,48 @@ void Game::run()
         // Rendering
         m_window.clear();
 
+
+        if (Quit) {
+            m_window.close();
+        }
+
+
+
+        if (Running) {
+			m_gameState = GameState::PLAYING;
+            
+            m_entityManager->updateAll(m_deltatime);
+        }
+        else if (!Running) {
+            m_entityManager->resetPlayerPosition();
+            m_gameState = GameState::MAIN_MENU;
+        }
+
+        if (m_entityManager->playerOnFire()) {
+            m_gameState = GameState::DEFEAT;
+        }
+
+        if (m_gameState == GameState::MAIN_MENU) {
+            m_entityManager->playerOnFire() == false;
+            m_window.clear();
+            m_uiManager.generateMainMenuUIs();
+        }
+        
+
         if (m_gameState == GameState::PLAYING)
         {
             drawGameGraphics();
             m_entityManager->drawAll(m_window);
+
         }
 
+        if (m_gameState == GameState::DEFEAT) {
+			
+            m_window.clear();
+            m_uiManager.generateDefeatUIs();
+        }
+        
+        m_uiManager.renderUIs(m_window);
         m_window.display();
     }
 }

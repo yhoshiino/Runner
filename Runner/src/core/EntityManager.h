@@ -26,7 +26,7 @@ public:
 	void spawnEntitiesRandomly(int entitiesToSpawn, float deltaTime);
 
 	void resetPlayerPosition();
-
+	bool playerOnFire();
 private:
 	GameStats* m_gameStats;
 

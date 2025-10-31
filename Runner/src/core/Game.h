@@ -45,6 +45,8 @@ private:
 
 	void shutDown();
 
+	bool Running = false;
+	bool Quit = false;
 private:
 
 	// Window
@@ -69,7 +71,7 @@ private:
 	std::unique_ptr<UIManager> m_uiManager = nullptr;
 
 	// Game State
-	GameState m_gameState = GameState::PLAYING;
+	GameState m_gameState = GameState::MAIN_MENU;
 
 	// Graphics
 	sf::Texture m_conveyorTexture;
