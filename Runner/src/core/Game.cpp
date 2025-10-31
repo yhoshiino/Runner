@@ -22,13 +22,20 @@ void Game::run()
     float spawnAccumulator = 0.f;
 
     // Temporary shapes
-    sf::RectangleShape conveyor({1920.f, 504 });
-    conveyor.setFillColor(sf::Color(150, 150, 150));
+	sf::Texture conveyorTexture;
+	sf::Sprite conveyorSprite1(conveyorTexture);
+	sf::Sprite conveyorSprite2(conveyorTexture);
+	auto isLoaded = conveyorTexture.loadFromFile("assets/textures/sprites/conveyor.png");
+	conveyorSprite1.setTexture(conveyorTexture, true);
+    conveyorSprite2.setTexture(conveyorTexture, true);
+	conveyorSprite1.setScale({ 8.f, 8.f });
+    conveyorSprite2.setScale({ 8.f, 8.f });
 
     sf::RectangleShape fire({ 300.f, 1080.f });
     fire.setFillColor(sf::Color(255, 124, 70));
 
-    conveyor.setPosition({ fire.getSize().x, 576 / 2.f});
+    conveyorSprite1.setPosition({ 0.f, 576 / 2.f });
+    conveyorSprite2.setPosition({ conveyorSprite1.getGlobalBounds().size.x, 576 / 2.f});
 
 	m_levelManager->load(1);
 
@@ -87,12 +94,23 @@ void Game::run()
         }
 		//m_uiManager.updateUIs(m_deltatime);
         m_entityManager->updateAll(m_deltatime);
+
+		conveyorSprite1.move(sf::Vector2f{ -m_gameStats->getConveyorSpeed() * m_deltatime, 0.f });
+		conveyorSprite2.move(sf::Vector2f{ -m_gameStats->getConveyorSpeed() * m_deltatime, 0.f });
+
+        if(conveyorSprite1.getPosition().x + conveyorSprite1.getGlobalBounds().size.x < 0.f)
+            conveyorSprite1.setPosition({ conveyorSprite2.getPosition().x + conveyorSprite2.getGlobalBounds().size.x, 576 / 2.f });
+
+        if (conveyorSprite2.getPosition().x + conveyorSprite2.getGlobalBounds().size.x < 0.f)
+            conveyorSprite2.setPosition({ conveyorSprite1.getPosition().x + conveyorSprite1.getGlobalBounds().size.x, 576 / 2.f });
 		
         m_entityManager->resetPlayerPosition();
         m_window.clear();
 		//m_uiManager.renderUIs(m_window);
         //if (m_gameState == GameState::Playing) {
-            m_window.draw(conveyor);
+            //m_window.draw(conveyor);
+            m_window.draw(conveyorSprite1);
+            m_window.draw(conveyorSprite2);
             m_window.draw(fire);
 
             m_entityManager->drawAll(m_window);
