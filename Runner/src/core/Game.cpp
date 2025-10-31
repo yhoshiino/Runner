@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game(): m_uiManager(UIManager(this)),
+Game::Game(): m_uiManager(std::make_unique<UIManager>(this)),
               m_conveyorSprite1(m_conveyorTexture), m_conveyorSprite2(m_conveyorTexture), m_factorySprite(m_factoryTexture), m_fireSprite(m_fireTexture)
 {
     m_window.create(sf::VideoMode(m_LOGICAL_RESOLUTION), "Robot Runner", sf::State::Fullscreen);
@@ -12,7 +12,7 @@ Game::Game(): m_uiManager(UIManager(this)),
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
 
     initGraphics();
-    m_uiManager.initGameStats(m_gameStats.get());
+    m_uiManager->initGameStats(m_gameStats.get());
     initViews();
 }
 
@@ -24,10 +24,8 @@ Game::~Game()
 
 void Game::run()
 {
-
     m_window.setView(m_gameView);
 
-    
 
     while (m_window.isOpen())
     {
@@ -37,7 +35,8 @@ void Game::run()
         pollEvents();
 
         //std::cout << "[SCORE]: " << std::ceil(m_gameStats->getScore()) << std::endl;
-       
+
+        // Update
         if (m_gameState == GameState::PLAYING)
         {
             // Spawn random entitites
@@ -47,12 +46,10 @@ void Game::run()
             m_gameStats->updateConveyorSpeed(m_deltatime);
             m_gameStats->updateDistance(0.2f, m_deltatime);
 
-            m_uiManager.updateUIs(m_deltatime);
+            m_uiManager->updateUIs(m_deltatime);
 
             m_entityManager->updateAll(m_deltatime);
             updateGameGraphics();
-
-            m_entityManager->resetPlayerPosition();
 
             //std::cout << "[SCORE]: " << std::ceil(m_gameStats->getScore()) << std::endl;
         }
@@ -60,48 +57,37 @@ void Game::run()
         // Rendering
         m_window.clear();
 
-
         if (Quit) {
             m_window.close();
         }
 
-
-
-        if (Running) {
-			m_gameState = GameState::PLAYING;
-            
-            m_entityManager->updateAll(m_deltatime);
-        }
-        else if (!Running) {
+        if (Running)
+            m_gameState = GameState::PLAYING;
+        else
+        {
             m_entityManager->resetPlayerPosition();
             m_gameState = GameState::MAIN_MENU;
         }
 
-        if (m_entityManager->playerOnFire()) {
+        if (m_entityManager->playerOnFire())
             m_gameState = GameState::DEFEAT;
-        }
 
-        if (m_gameState == GameState::MAIN_MENU) {
-            m_entityManager->playerOnFire() == false;
-            m_window.clear();
-            m_uiManager.generateMainMenuUIs();
-        }
-        
+        if (m_gameState == GameState::MAIN_MENU)
+            m_uiManager->generateMainMenuUIs();
 
         if (m_gameState == GameState::PLAYING)
         {
             drawGameGraphics();
             m_entityManager->drawAll(m_window);
-
         }
 
         if (m_gameState == GameState::DEFEAT) {
-			
-            m_window.clear();
-            m_uiManager.generateDefeatUIs();
+            std::cout << "defeat" << std::endl;
+            m_uiManager->generateDefeatUIs();
         }
-        
-        m_uiManager.renderUIs(m_window);
+            
+
+        m_uiManager->renderUIs(m_window);
         m_window.display();
     }
 }
@@ -150,13 +136,13 @@ void Game::pollEvents()
         if (event->is<sf::Event::Closed>())
             m_window.close();
 
-        // Handles buttons events, etc...
-        //m_uiManager->handleUIEvents(*event, m_window);
-
         if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
             if (keyPressed->scancode == sf::Keyboard::Scancode::Escape)
                 m_window.close();
         }
+
+        // Handles buttons events, etc...
+        m_uiManager->handleUIEvents(*event, m_window);
     }
 }
 

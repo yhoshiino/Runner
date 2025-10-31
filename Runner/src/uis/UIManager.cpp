@@ -49,6 +49,7 @@ void UIManager::handleUIEvents(const sf::Event& event, const sf::RenderWindow& w
 {
     for (auto& uiElement : m_uiElements)
     {
+        if (!uiElement) continue;
         uiElement->handleEvent(event, window);
     }
 
@@ -97,9 +98,8 @@ void UIManager::generateMainMenuUIs() {
             if (m_game->Running) {
                 m_pendingAction = [this]() {
                     std::cout << "play!!!" << std::endl;
-                    };
-
                 generateInGameUIs();
+                };
             }
     });
 

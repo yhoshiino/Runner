@@ -37,6 +37,11 @@ public:
 
 	int getSeed() const;
 
+public:
+
+	bool Running = false;
+	bool Quit = false;
+
 private:
 
 	// Internal init methods
@@ -44,9 +49,6 @@ private:
 	void initViews();
 
 	void shutDown();
-
-	bool Running = false;
-	bool Quit = false;
 private:
 
 	// Window
