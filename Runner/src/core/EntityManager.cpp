@@ -16,7 +16,7 @@ EntityManager::~EntityManager()
 void EntityManager::updateAll(float deltaTime)
 {
 	// Remove obstacles that are out of the screen
-	std::erase_if(m_obstacles, [](const std::unique_ptr<Entity>& obstacle)
+	std::erase_if(m_gameObjects, [](const std::unique_ptr<Entity>& obstacle)
 		{
 			//std::cout << "Removed obstacle at x: " << obstacle->getPosition().x << std::endl;
 			return obstacle->getPosition().x <= -75.0f;
@@ -24,9 +24,9 @@ void EntityManager::updateAll(float deltaTime)
 
 	//std::cout << "Obstacles count: " << m_obstacles.size() << std::endl;
 
-	for(auto& obstacle : m_obstacles)
+	for(auto& gameObject : m_gameObjects)
 	{
-		obstacle->update(deltaTime);
+		gameObject->update(deltaTime);
 	}
 
 	m_player->handleInputs();
@@ -38,33 +38,63 @@ void EntityManager::updateAll(float deltaTime)
 
 void EntityManager::drawAll(sf::RenderWindow& window) 
 {
-	for (auto& obstacle : m_obstacles)
+	for (auto& gameObject : m_gameObjects)
 	{
-		obstacle->draw(window);
+		if (!gameObject) continue;
+		if (!gameObject->isActive()) continue;
+
+		gameObject->draw(window);
 	}
 
 	m_player->draw(window);
 }
 
-void EntityManager::updateColisions(float deltaTime) 
+void EntityManager::updateColisions(float deltaTime)
 {
 	if (!m_player) return;
 
-	const sf::FloatRect playerHitbox = m_player->getHitbox();
-	const sf::Vector2f prevPos = m_player->getPreviousPosition();
-	const sf::Vector2f currPos = m_player->getPosition();
+	const sf::Vector2f PREVIOUS_POS = m_player->getPreviousPosition();
+	const sf::Vector2f CURRENT_POS = m_player->getPosition();
 
-	for (auto& obstacle : m_obstacles)
+	const sf::FloatRect PLAYER_HITBOX = m_player->getHitbox();
+	const sf::Vector2f PLAYER_HALF_SIZE = PLAYER_HITBOX.size * 0.5f;
+
+	const sf::Vector2f PLAYER_START_CENTER = PREVIOUS_POS + PLAYER_HALF_SIZE;
+	const sf::Vector2f PLAYER_END_CENTER = CURRENT_POS + PLAYER_HALF_SIZE;
+
+	for (auto& gameObject : m_gameObjects)
 	{
-		if (!obstacle) continue;
+		if (!gameObject) continue;
+		if (!gameObject->isActive()) continue;
 
-		const sf::FloatRect obstacleHitbox = obstacle->getHitbox();
+		const sf::FloatRect OBJECT_HITBOX = gameObject->getHitbox();
 
-		// Continuous Collision Detection (CCD)
-		if (utils::lineIntersectsRect(prevPos, currPos, obstacleHitbox))
+		/*
+		* Continuous Collision Detection (CCD):
+		* We trace the player's center across its movement
+		* and check if the segment intersects the object's hitbox.
+		*/
+		bool intersects = utils::lineIntersectsRect(PLAYER_START_CENTER, PLAYER_END_CENTER, OBJECT_HITBOX);
+
+		// We check for AABB overlap here (Axis Aligned Bounding Box)
+		if (!intersects)
 		{
-			m_player->onHit(obstacle.get());
-			obstacle->onHit(m_player.get());
+			const bool OVERLAP_X =
+				PLAYER_HITBOX.position.x + PLAYER_HITBOX.size.x >= OBJECT_HITBOX.position.x &&
+				OBJECT_HITBOX.position.x + OBJECT_HITBOX.size.x >= PLAYER_HITBOX.position.x;
+
+			const bool OVERLAP_Y =
+				PLAYER_HITBOX.position.y + PLAYER_HITBOX.size.y >= OBJECT_HITBOX.position.y &&
+				OBJECT_HITBOX.position.y + OBJECT_HITBOX.size.y >= PLAYER_HITBOX.position.y;
+
+			if (OVERLAP_X && OVERLAP_Y)
+				intersects = true;
+		}
+
+		if (intersects)
+		{
+			m_player->onHit(gameObject.get());
+			gameObject->onHit(m_player.get());
 		}
 	}
 }
@@ -92,34 +122,34 @@ void EntityManager::applyPlayerMovement(float deltaTime)
 	bool collidesY = false;
 	bool collideFromLeft = false;
 
-	for (const auto& obstacle : m_obstacles)
+	for (const auto& gameObject : m_gameObjects)
 	{
-		if (!obstacle) continue;
+		if (!gameObject) continue;
+		if (dynamic_cast<Collectible*>(gameObject.get())) continue; // Do not stop the player when they hit a collectible
 
-		const sf::FloatRect& obstacleHitbox = obstacle->getHitbox();
+		const sf::FloatRect& OBJECT_HITBOX = gameObject->getHitbox();
 
-		if (nextHitboxX.findIntersection(obstacleHitbox).has_value())
+		if (nextHitboxX.findIntersection(OBJECT_HITBOX).has_value())
 		{
 			collidesX = true;
 
 			// Determine if collision happens from the left or right
-			const float playerCenterX = playerHitbox.position.x + playerHitbox.size.x * 0.5f;
-			const float obstacleCenterX = obstacleHitbox.position.x + obstacleHitbox.size.x * 0.5f;
+			const float PLAYER_CENTER_X = playerHitbox.position.x + playerHitbox.size.x * 0.5f;
+			const float OBJECT_CENTER_X = OBJECT_HITBOX.position.x + OBJECT_HITBOX.size.x * 0.5f;
 
 			// If centers are different enough use that. Otherwise fall back to velocity sign.
-			if (std::abs(playerCenterX - obstacleCenterX) > EPSILON)
+			if (std::abs(PLAYER_CENTER_X - OBJECT_CENTER_X) > EPSILON)
 			{
-				collideFromLeft = (playerCenterX < obstacleCenterX);
+				collideFromLeft = (PLAYER_CENTER_X < OBJECT_CENTER_X);
 			}
 			else
 			{
 				// Exact edge case: use movement direction to decide
 				if (TOTAL_VELOCITY.x > 0.f) collideFromLeft = true;
-				else if (TOTAL_VELOCITY.x < 0.f) collideFromLeft = false;
-				// if TOTAL_VELOCITY.x == 0, leave previous value (default false)
+				else if (TOTAL_VELOCITY.x < 0.f) collideFromLeft = false; // if TOTAL_VELOCITY.x == 0, leave previous value (default false)
 			}
 		}
-		if (nextHitboxY.findIntersection(obstacleHitbox).has_value())
+		if (nextHitboxY.findIntersection(OBJECT_HITBOX).has_value())
 			collidesY = true;
 
 		if (collidesX && collidesY)
@@ -141,17 +171,25 @@ void EntityManager::applyPlayerMovement(float deltaTime)
 	//std::cout << "[Final Move Vector]: " << moveVector.x << ", " << moveVector.y << std::endl;
 }
 
-void EntityManager::spawnEntity(int entityUID, sf::Vector2f position) 
+void EntityManager::spawnEntity(sf::Vector2f position) 
 {
-	// The UID will have more use in the future
-
 	auto newEntity = std::make_unique<Entity>(m_gameStats, position);
-	m_obstacles.push_back(std::move(newEntity));
+	m_gameObjects.push_back(std::move(newEntity));
 }
 
+void EntityManager::spawnCollectible(sf::Vector2f position, char uid)
+{
+	auto newCollectible = std::make_unique<Collectible>(m_gameStats, position, uid);
+	m_gameObjects.push_back(std::move(newCollectible));
+}
 
-void EntityManager::resetPlayerPosition() {
-	if (m_player->isOnFire()) {
+void EntityManager::spawnEntity(std::unique_ptr<Entity> entityPtr)
+{
+	m_gameObjects.push_back(std::move(entityPtr));
+}
+
+void EntityManager::resetPlayerPosition() 
+{
+	if (m_player->isOnFire()) 
 		m_player->reset();
-	}
 }

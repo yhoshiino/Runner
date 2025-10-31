@@ -1,6 +1,5 @@
 #include "CollisionUtils.h"
 
-
 static float Cross(const sf::Vector2f& vectorA, const sf::Vector2f& vectorB)
 {
     return vectorA.x * vectorB.y - vectorA.y * vectorB.x;

@@ -19,15 +19,15 @@ public:
 	virtual bool isColliding(sf::FloatRect otherHitbox, float deltaTime);
 	virtual void onHit(Entity * otherEntity);
 
+	void setPosition(sf::Vector2f newPos);
 	void addVelocity(sf::Vector2f newVelocity);
 
 	sf::Vector2f getPosition() const;
 	sf::Vector2f getPreviousPosition() const;
 	float getConveyorSpeed() const;
 	sf::FloatRect getHitbox() const;
-
-	void setPosition(sf::Vector2f newPos);
-
+	
+	bool isActive() const;
 
 protected:
 
@@ -40,11 +40,12 @@ protected:
 
 	sf::RectangleShape m_square; // For debugging
 
-	const float m_SIZE = 72.f;
-private:
-
 	int m_health = 5;
-	
+	bool m_wasActivated = false; // Used to activate the entity only once when it enters the screen
+
+	const float m_SIZE = 72.f;
+	bool m_isActive = false;
+
 	enum class State 
 	{
 		ALIVE,
@@ -52,6 +53,4 @@ private:
 	};
 
 	State m_state = State::ALIVE;
-
-	bool m_isActive = false;
 };

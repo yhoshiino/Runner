@@ -16,6 +16,7 @@
     <ClCompile Include="src\core\GameStats.cpp" />
     <ClCompile Include="src\core\LevelManager.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\models\Collectible.cpp" />
     <ClCompile Include="src\models\Entity.cpp" />
     <ClCompile Include="src\models\Player.cpp" />
     <ClCompile Include="src\uis\UIManager.cpp" />
@@ -30,6 +31,8 @@
     <ClInclude Include="src\core\Game.h" />
     <ClInclude Include="src\core\GameStats.h" />
     <ClInclude Include="src\core\LevelManager.h" />
+    <ClInclude Include="src\core\MenuManager.h" />
+    <ClInclude Include="src\models\Collectible.h" />
     <ClInclude Include="src\models\Entity.h" />
     <ClInclude Include="src\models\Player.h" />
     <ClInclude Include="src\uis\UIManager.h" />
