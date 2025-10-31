@@ -48,7 +48,7 @@ void Game::run()
             }
             m_uiManager.handleUIEvents(*event, m_window);
         }
-
+        // TEMPORARY handle game state/change window
         if (m_gameState == GameState::MainMenu)
         {
             m_uiManager.generateMainMenuUIs();
@@ -91,12 +91,12 @@ void Game::run()
 		m_uiManager.generateMainMenuUIs();
 		m_uiManager.renderUIs(m_window);
         if (m_gameState == GameState::Playing) {
+            m_window.draw(conveyor);
+            m_window.draw(fire);
 
+            m_entityManager->drawAll(m_window);
         }
-        m_window.draw(conveyor);
-        m_window.draw(fire);
-
-        m_entityManager->drawAll(m_window);
+        
 
         m_window.display();
     }
