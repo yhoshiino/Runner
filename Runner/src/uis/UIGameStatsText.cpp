@@ -12,7 +12,7 @@ void UIGameStatsText::update(float deltatime)
 {
 	m_text.setString("Score : " + std::to_string((int)m_gameStats->getScore()));
 	m_text.setCharacterSize(50);
-	m_distance.setString("Distance : " + std::to_string((int)m_gameStats->getDistance()));
+	m_distance.setString("Distance : " + std::to_string((int)m_gameStats->getDistance()) + "m");
 
 }
 

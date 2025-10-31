@@ -44,7 +44,7 @@ void Game::run()
 
             // Updating
             m_gameStats->updateConveyorSpeed(m_deltatime);
-            m_gameStats->updateDistance(0.2f, m_deltatime);
+            m_gameStats->updateDistance(m_deltatime);
 
             m_uiManager->updateUIs(m_deltatime);
 
@@ -84,6 +84,8 @@ void Game::run()
         if (m_gameState == GameState::DEFEAT) {
             std::cout << "defeat" << std::endl;
             m_uiManager->generateDefeatUIs();
+            m_gameStats->resetStats();
+            m_entityManager->clearGameObjects();
         }
             
 

@@ -5,10 +5,21 @@ void GameStats::updateConveyorSpeed(float deltaTime)
     m_conveyorSpeed += m_CONVEYOR_ACCELERATION_FACTOR * deltaTime;
 }
 
-void GameStats::updateDistance(float meter, float deltaTime)
+void GameStats::updateDistance(float deltaTime)
 {
-    m_distance += meter;
-    m_score += m_distance * deltaTime * 0.01f;
+    const float METER_IN_PIXELS = 200.f;
+
+    float distanceThisFrame = (m_conveyorSpeed * deltaTime) / METER_IN_PIXELS;
+    m_distance += distanceThisFrame;
+
+    m_score += distanceThisFrame * 5.5f; // So it seems a bit random
+}
+
+void GameStats::resetStats()
+{
+    m_score = 0.f;
+    m_distance = 0.f;
+    m_conveyorSpeed = m_START_CONVEYOR_SPEED;
 }
 
 float GameStats::getConveyorSpeed() const

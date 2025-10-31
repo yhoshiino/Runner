@@ -213,6 +213,11 @@ void EntityManager::resetPlayerPosition()
 		m_player->reset();
 }
 
+void EntityManager::clearGameObjects()
+{
+	m_gameObjects.clear();
+}
+
 bool EntityManager::playerOnFire() 
 {
 	return m_player->isOnFire();
