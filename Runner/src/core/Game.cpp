@@ -82,7 +82,7 @@ void Game::run()
         }
 
         if (m_gameState == GameState::DEFEAT) {
-            std::cout << "defeat" << std::endl;
+            //std::cout << "defeat" << std::endl;
             m_uiManager->generateDefeatUIs();
             m_gameStats->resetStats();
             m_entityManager->clearGameObjects();

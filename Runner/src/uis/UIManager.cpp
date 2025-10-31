@@ -4,7 +4,6 @@
 #include "UITextElement.h"
 #include "UITextureElement.h"
 #include "UIGameStatsText.h"
-#include "UIFinalScoreTextElement.h"
 
 #include "../core/Game.h"
 

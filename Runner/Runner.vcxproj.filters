@@ -60,9 +60,6 @@
     <ClCompile Include="src\uis\UIGameStatsText.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="src\uis\UIFinalScoreTextElement.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\models\Player.h">
@@ -104,10 +101,10 @@
     <ClInclude Include="src\uis\UIGameStatsText.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="src\uis\UIFinalScoreTextElement.h">
+    <ClInclude Include="src\models\Collectible.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="src\models\Collectible.h">
+    <ClInclude Include="src\core\MenuManager.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

@@ -9,12 +9,12 @@ public:
 	void updateConveyorSpeed(float deltaTime);
 	void updateDistance(float deltaTime);
 
+	void addScore(int scoreToAdd);
 	void resetStats();
 
 	float getConveyorSpeed() const;
 	float getDistance() const;
 	float getScore() const;
-
 	float getFinalScore();
 
 private:

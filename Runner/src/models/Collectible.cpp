@@ -54,6 +54,6 @@ void Collectible::onHit(Entity* otherEntity)
 {
 	if (!dynamic_cast<Player*>(otherEntity)) return; // Only triggers when the player touches it
 
-	std::cout << "COLLECTIBLE TAKEN\n";
+	m_gameStats->addScore(5);
 	m_isActive = false;
 }

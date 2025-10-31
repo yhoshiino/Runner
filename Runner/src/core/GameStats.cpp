@@ -15,6 +15,11 @@ void GameStats::updateDistance(float deltaTime)
     m_score += distanceThisFrame * 5.5f; // So it seems a bit random
 }
 
+void GameStats::addScore(int scoreToAdd)
+{
+    m_score += scoreToAdd;
+}
+
 void GameStats::resetStats()
 {
     m_score = 0.f;
