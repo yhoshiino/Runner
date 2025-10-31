@@ -142,8 +142,8 @@ void UIManager::generateDefeatUIs()
 
     auto title = std::make_shared<UITextElement>(
         sf::Vector2f{ 200.f, 100.f },
-        sf::Vector2f{ 1920.f/2.f - 180, 1080.f / 2.f - 300},
-        "Defeat...",
+        sf::Vector2f{ 1920.f/2.f - 350, 1080.f / 2.f - 200},
+        "Defeat...\nFinal Score : " + std::to_string((int)m_gameStats->getFinalScore()),
         72
     );
 
@@ -156,13 +156,9 @@ void UIManager::generateDefeatUIs()
 		m_game->Running = false;
         });
 
-    auto score = std::make_shared<UIFinalScoreTextElement>(
-        m_gameStats
-    );
 
     addUIElement(bg);
     addUIElement(title);
-    addUIElement(score);
     addUIElement(menuButton);
 }
 
