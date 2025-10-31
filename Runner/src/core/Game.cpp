@@ -23,19 +23,20 @@ void Game::run()
 
     // Temporary shapes
 	sf::Texture conveyorTexture;
-	sf::Sprite conveyorSprite1(conveyorTexture);
-	sf::Sprite conveyorSprite2(conveyorTexture);
 	auto isLoaded = conveyorTexture.loadFromFile("assets/textures/sprites/conveyor.png");
-	conveyorSprite1.setTexture(conveyorTexture, true);
-    conveyorSprite2.setTexture(conveyorTexture, true);
+    sf::Sprite conveyorSprite1(conveyorTexture);
+    sf::Sprite conveyorSprite2(conveyorTexture);
 	conveyorSprite1.setScale({ 8.f, 8.f });
     conveyorSprite2.setScale({ 8.f, 8.f });
 
-    sf::RectangleShape fire({ 300.f, 1080.f });
-    fire.setFillColor(sf::Color(255, 124, 70));
+	sf::Texture fireTexture;
+	isLoaded = fireTexture.loadFromFile("assets/textures/sprites/fire_pit.png");
+	sf::Sprite fireSprite(fireTexture);
+    fireSprite.setScale({ 8.f, 8.f });
 
     conveyorSprite1.setPosition({ 0.f, 576 / 2.f });
     conveyorSprite2.setPosition({ conveyorSprite1.getGlobalBounds().size.x, 576 / 2.f});
+    fireSprite.setPosition({ 0.f, 0.f });
 
 	m_levelManager->load(1);
 
@@ -111,7 +112,7 @@ void Game::run()
             //m_window.draw(conveyor);
             m_window.draw(conveyorSprite1);
             m_window.draw(conveyorSprite2);
-            m_window.draw(fire);
+            m_window.draw(fireSprite);
 
             m_entityManager->drawAll(m_window);
         //}
