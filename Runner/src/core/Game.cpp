@@ -1,12 +1,13 @@
 #include "Game.h"
 
-Game::Game()
+Game::Game(): m_conveyorSprite1(m_conveyorTexture), m_conveyorSprite2(m_conveyorTexture), m_factorySprite(m_factoryTexture), m_fireSprite(m_fireTexture)
 {
     m_window.create(sf::VideoMode(m_logicalResolution), "Robot Runner", sf::State::Fullscreen);
     m_gameStats = std::make_unique<GameStats>();
     m_entityManager = std::make_unique<EntityManager>(m_gameStats.get());
     m_levelManager = std::make_unique<LevelManager>(m_entityManager.get());
 
+    initGraphics();
     initViews();
 }
 
@@ -17,32 +18,9 @@ Game::~Game()
 
 void Game::run()
 {
-    // Temporary spawner
+    // Temporary spawner variables
     const float spawnDistance = 350.f;
     float spawnAccumulator = 0.f;
-
-    // Temporary shapes
-	sf::Texture conveyorTexture;
-	auto isLoaded = conveyorTexture.loadFromFile("assets/textures/sprites/conveyor.png");
-    sf::Sprite conveyorSprite1(conveyorTexture);
-    sf::Sprite conveyorSprite2(conveyorTexture);
-	conveyorSprite1.setScale({ 8.f, 8.f });
-    conveyorSprite2.setScale({ 8.f, 8.f });
-
-	sf::Texture fireTexture;
-	isLoaded = fireTexture.loadFromFile("assets/textures/sprites/fire_pit.png");
-	sf::Sprite fireSprite(fireTexture);
-    fireSprite.setScale({ 8.f, 8.f });
-
-    sf::Texture factoryTexture;
-	isLoaded = factoryTexture.loadFromFile("assets/textures/sprites/factory.png");
-	sf::Sprite factorySprite(factoryTexture);
-	factorySprite.setScale({ 5.f, 5.f });
-
-    conveyorSprite1.setPosition({ 0.f, 576 / 2.f });
-    conveyorSprite2.setPosition({ conveyorSprite1.getGlobalBounds().size.x, 576 / 2.f});
-    fireSprite.setPosition({ 0.f, 0.f });
-    factorySprite.setPosition({ fireSprite.getGlobalBounds().size.x, 0.f });
 
 	m_levelManager->load(1);
 
@@ -52,16 +30,9 @@ void Game::run()
     {
         m_deltatime = m_deltaClock.restart().asSeconds();
 
-        while (const std::optional event = m_window.pollEvent())
-        {
-            if (event->is<sf::Event::Closed>())
-                m_window.close();
-            else if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
-                if (keyPressed->scancode == sf::Keyboard::Scancode::Escape)
-                    m_window.close();
-            }
-            m_uiManager.handleUIEvents(*event, m_window);
-        }
+        // Poll Events
+        pollEvents();
+
         // TEMPORARY handle game state/change window
         /*
         if (m_gameState == GameState::MainMenu)
@@ -76,10 +47,6 @@ void Game::run()
 
             m_uiManager.renderUIs(m_window);
         }*/
-
-
-        m_gameStats->updateConveyorSpeed(m_deltatime);
-        m_gameStats->updateDistance(0.2f, m_deltatime);
 
         //std::cout << "[SCORE]: " << std::ceil(m_gameStats->getScore()) << std::endl;
 
@@ -99,34 +66,46 @@ void Game::run()
                 m_entityManager->spawnCollectible(sf::Vector2f{ 2000.f - 100, y }, 't');
             }
         }
+
+        // Updating
+        m_gameStats->updateConveyorSpeed(m_deltatime);
+        m_gameStats->updateDistance(0.2f, m_deltatime);
 		//m_uiManager.updateUIs(m_deltatime);
         m_entityManager->updateAll(m_deltatime);
-
-		conveyorSprite1.move(sf::Vector2f{ -m_gameStats->getConveyorSpeed() * m_deltatime, 0.f });
-		conveyorSprite2.move(sf::Vector2f{ -m_gameStats->getConveyorSpeed() * m_deltatime, 0.f });
-
-        if(conveyorSprite1.getPosition().x + conveyorSprite1.getGlobalBounds().size.x < 0.f)
-            conveyorSprite1.setPosition({ conveyorSprite2.getPosition().x + conveyorSprite2.getGlobalBounds().size.x, 576 / 2.f });
-
-        if (conveyorSprite2.getPosition().x + conveyorSprite2.getGlobalBounds().size.x < 0.f)
-            conveyorSprite2.setPosition({ conveyorSprite1.getPosition().x + conveyorSprite1.getGlobalBounds().size.x, 576 / 2.f });
-		
+        updateGameGraphics();
         m_entityManager->resetPlayerPosition();
+
+        // Rendering
         m_window.clear();
-		//m_uiManager.renderUIs(m_window);
-        //if (m_gameState == GameState::Playing) {
-            //m_window.draw(conveyor);
-            m_window.draw(factorySprite);
-            m_window.draw(conveyorSprite1);
-            m_window.draw(conveyorSprite2);
-            m_window.draw(fireSprite);
-
-            m_entityManager->drawAll(m_window);
-        //}
-        
-
+        drawGameGraphics();
+        m_entityManager->drawAll(m_window);
         m_window.display();
     }
+}
+
+void Game::initGraphics()
+{
+    auto isConveyorTextureLoaded = m_conveyorTexture.loadFromFile("assets/textures/sprites/conveyor.png");
+    auto isFireTextureLoaded = m_fireTexture.loadFromFile("assets/textures/sprites/fire_pit.png");
+    auto isFactoryTextureLoaded = m_factoryTexture.loadFromFile("assets/textures/sprites/factory.png");
+
+    // Reseting texture rect
+    m_conveyorSprite1.setTexture(m_conveyorTexture, true); // True = reseting texture rect
+    m_conveyorSprite2.setTexture(m_conveyorTexture, true);
+    m_fireSprite.setTexture(m_fireTexture, true);
+    m_factorySprite.setTexture(m_factoryTexture, true);
+
+    // Scaling
+    m_conveyorSprite1.setScale({ 8.f, 8.f });
+    m_conveyorSprite2.setScale({ 8.f, 8.f });
+    m_fireSprite.setScale({ 8.f, 8.f });
+    m_factorySprite.setScale({ 5.f, 5.f });
+
+    // Init sprite positions
+    m_conveyorSprite1.setPosition({ 0.f, 576 / 2.f });
+    m_conveyorSprite2.setPosition({ m_conveyorSprite1.getGlobalBounds().size.x, 576 / 2.f });
+    m_fireSprite.setPosition({ 0.f, 0.f });
+    m_factorySprite.setPosition({ m_fireSprite.getGlobalBounds().size.x, 0.f });
 }
 
 void Game::initViews()
@@ -143,8 +122,41 @@ void Game::shutDown()
 
 void Game::pollEvents()
 {
+    while (const std::optional event = m_window.pollEvent())
+    {
+        if (event->is<sf::Event::Closed>())
+            m_window.close();
+
+        // Handles buttons events, etc...
+        m_uiManager.handleUIEvents(*event, m_window);
+
+        if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
+            if (keyPressed->scancode == sf::Keyboard::Scancode::Escape)
+                m_window.close();
+        }
+    }
 }
 
 void Game::centerWindow()
 {
+}
+
+void Game::updateGameGraphics()
+{
+    m_conveyorSprite1.move(sf::Vector2f{ -m_gameStats->getConveyorSpeed() * m_deltatime, 0.f });
+    m_conveyorSprite2.move(sf::Vector2f{ -m_gameStats->getConveyorSpeed() * m_deltatime, 0.f });
+
+    if (m_conveyorSprite1.getPosition().x + m_conveyorSprite1.getGlobalBounds().size.x < 0.f)
+        m_conveyorSprite1.setPosition({ m_conveyorSprite2.getPosition().x + m_conveyorSprite2.getGlobalBounds().size.x, 576 / 2.f });
+
+    if (m_conveyorSprite2.getPosition().x + m_conveyorSprite2.getGlobalBounds().size.x < 0.f)
+        m_conveyorSprite2.setPosition({ m_conveyorSprite1.getPosition().x + m_conveyorSprite1.getGlobalBounds().size.x, 576 / 2.f });
+}
+
+void Game::drawGameGraphics()
+{
+    m_window.draw(m_factorySprite);
+    m_window.draw(m_conveyorSprite1);
+    m_window.draw(m_conveyorSprite2);
+    m_window.draw(m_fireSprite);
 }

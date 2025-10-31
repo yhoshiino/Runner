@@ -30,6 +30,8 @@ public:
 
 	void centerWindow();
 
+	void updateGameGraphics();
+	void drawGameGraphics();
 
 private:
 
@@ -49,12 +51,23 @@ private:
 
 private:
 
-	
-
 	GameState m_gameState = GameState::MainMenu;
-
 	UIManager m_uiManager;
 
+	// Graphics
+	sf::Texture m_conveyorTexture;
+	sf::Texture m_fireTexture;
+	sf::Texture m_factoryTexture;
+
+	sf::Sprite m_conveyorSprite1;
+	sf::Sprite m_conveyorSprite2;
+	sf::Sprite m_fireSprite;
+	sf::Sprite m_factorySprite; // Game background
+
+private:
+
+	void initGraphics();
 	void initViews();
+
 	void shutDown();
 };
