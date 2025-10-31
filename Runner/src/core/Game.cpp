@@ -2,7 +2,7 @@
 
 Game::Game()
 {
-    m_window.create(sf::VideoMode(m_logicalResolution), "Robot Runner");
+    m_window.create(sf::VideoMode(m_logicalResolution), "Robot Runner", sf::State::Fullscreen);
     m_gameStats = std::make_unique<GameStats>();
     m_entityManager = std::make_unique<EntityManager>(m_gameStats.get());
     m_levelManager = std::make_unique<LevelManager>(m_entityManager.get());
@@ -34,9 +34,15 @@ void Game::run()
 	sf::Sprite fireSprite(fireTexture);
     fireSprite.setScale({ 8.f, 8.f });
 
+    sf::Texture factoryTexture;
+	isLoaded = factoryTexture.loadFromFile("assets/textures/sprites/factory.png");
+	sf::Sprite factorySprite(factoryTexture);
+	factorySprite.setScale({ 5.f, 5.f });
+
     conveyorSprite1.setPosition({ 0.f, 576 / 2.f });
     conveyorSprite2.setPosition({ conveyorSprite1.getGlobalBounds().size.x, 576 / 2.f});
     fireSprite.setPosition({ 0.f, 0.f });
+    factorySprite.setPosition({ fireSprite.getGlobalBounds().size.x, 0.f });
 
 	m_levelManager->load(1);
 
@@ -110,6 +116,7 @@ void Game::run()
 		//m_uiManager.renderUIs(m_window);
         //if (m_gameState == GameState::Playing) {
             //m_window.draw(conveyor);
+            m_window.draw(factorySprite);
             m_window.draw(conveyorSprite1);
             m_window.draw(conveyorSprite2);
             m_window.draw(fireSprite);
