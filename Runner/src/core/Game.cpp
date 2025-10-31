@@ -25,8 +25,6 @@ void Game::run()
     const float spawnDistance = 350.f;
     float spawnAccumulator = 0.f;
 
-	//m_levelManager->load(1);
-
     m_window.setView(m_gameView);
 
     while (m_window.isOpen())
