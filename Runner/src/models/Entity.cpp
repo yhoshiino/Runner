@@ -1,8 +1,11 @@
 #include "Entity.h"
 
 Entity::Entity(GameStats* gameStatsRef, sf::Vector2f spawnPosition) :
-	m_gameStats(gameStatsRef), m_position(spawnPosition)
+	m_gameStats(gameStatsRef), m_position(spawnPosition),
+	m_sprite(m_texture)
 {
+
+
 	m_square.setPosition(m_position);
 	m_square.setSize({ m_SIZE, m_SIZE });
 	m_square.setFillColor(sf::Color::Transparent);
@@ -10,9 +13,21 @@ Entity::Entity(GameStats* gameStatsRef, sf::Vector2f spawnPosition) :
 	m_square.setOutlineThickness(2.f);
 
 	m_hitbox = sf::FloatRect(m_position, { m_SIZE, m_SIZE });
+
+	bool textureFound = m_texture.loadFromFile("assets/textures/sprites/crate.png");
+	if (textureFound)
+	{
+		m_sprite.setTexture(m_texture, true);
+		m_sprite.setScale(sf::Vector2f{ m_SIZE / m_texture.getSize().x, m_SIZE / m_texture.getSize().y });
+	}
+	else
+	{
+		std::cerr << "Entity texture not found\n";
+	}
+
 }
 
-Entity::Entity(GameStats* gameStatsRef): m_gameStats(gameStatsRef)
+Entity::Entity(GameStats* gameStatsRef): m_gameStats(gameStatsRef), m_sprite(m_texture)
 {
 	m_square.setPosition(m_position);
 	m_square.setSize({ m_SIZE, m_SIZE });
@@ -21,6 +36,17 @@ Entity::Entity(GameStats* gameStatsRef): m_gameStats(gameStatsRef)
 	m_square.setOutlineThickness(2.f);
 
 	m_hitbox = sf::FloatRect(m_position, { m_SIZE, m_SIZE });
+
+	bool textureFound = m_texture.loadFromFile("assets/textures/sprites/crate.png");
+	if (textureFound)
+	{
+		m_sprite.setTexture(m_texture, true);
+		m_sprite.setScale(sf::Vector2f{ m_SIZE / m_texture.getSize().x, m_SIZE / m_texture.getSize().y });
+	}
+	else
+	{
+		std::cerr << "Entity texture not found\n";
+	}
 }
 
 Entity::~Entity()
@@ -41,13 +67,14 @@ void Entity::update(float deltaTime)
 
 	m_hitbox.position = m_position;
 	m_square.setPosition(m_position);
+	m_sprite.setPosition(m_position);
 
 	m_velocity = { 0.f, 0.f };
 }
 
 void Entity::draw(sf::RenderWindow& window)
 {
-	window.draw(m_square);
+	window.draw(m_sprite);
 }
 
 bool Entity::isColliding(sf::FloatRect otherHitbox, float deltaTime)

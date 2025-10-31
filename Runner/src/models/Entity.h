@@ -39,6 +39,8 @@ protected:
 	sf::FloatRect m_hitbox;
 
 	sf::RectangleShape m_square; // For debugging
+	sf::Sprite m_sprite;
+	sf::Texture m_texture;
 
 	int m_health = 5;
 	bool m_wasActivated = false; // Used to activate the entity only once when it enters the screen

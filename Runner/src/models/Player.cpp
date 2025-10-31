@@ -10,6 +10,17 @@ Player::Player(GameStats* gameStatsRef, sf::Vector2f spawnPosition) :
 	m_square.setFillColor(sf::Color::Transparent);
 
 	m_hitbox.size = { m_PLAYER_SIZE, m_PLAYER_SIZE };
+
+	bool textureFound = m_texture.loadFromFile("assets/textures/sprites/RobotHead.png");
+	if (textureFound)
+	{
+		m_sprite.setTexture(m_texture, true);
+		m_sprite.setScale(sf::Vector2f{ m_PLAYER_SIZE / m_texture.getSize().x, m_PLAYER_SIZE / m_texture.getSize().y });
+	}
+	else
+	{
+		std::cerr << "Player texture not found\n";
+	}
 }
 
 
@@ -36,7 +47,7 @@ void Player::update(float deltaTime)
 
 void Player::draw(sf::RenderWindow& window)
 {
-	window.draw(m_square);
+	window.draw(m_sprite);
 }
 
 void Player::move(const sf::Vector2f& movementVector)
@@ -47,6 +58,7 @@ void Player::move(const sf::Vector2f& movementVector)
 
 	m_hitbox.position = m_position;
 	m_square.setPosition(m_position);
+	m_sprite.setPosition(m_position);
 }
 
 // Called when player collides with another entity (currently empty)
